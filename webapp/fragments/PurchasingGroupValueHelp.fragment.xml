@@ -1,0 +1,23 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <TableSelectDialog id="pgSelectDialog" title="Select Purchasing Group" growing="true" growingThreshold="20" multiSelect="true" items="{PgVHModel>/}" confirm=".onPurchasingGroupConfirm" cancel=".onPurchasingGroupCancel" search=".onPurchasingGroupSearch" updateStarted=".onPurchasingGroupUpdateStarted" class="sapUiResponsiveContentPadding">
+
+        <columns>
+            <Column>
+                <Text text="Purchasing Group"/>
+            </Column>
+            <Column>
+                <Text text="Purchasing Group Name"/>
+            </Column>
+        </columns>
+
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{PgVHModel>PurchasingGroup}" />
+                    <Text text="{PgVHModel>PurchasingGrpName}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </TableSelectDialog>
+</core:FragmentDefinition>

@@ -1,6 +1,27 @@
 <mvc:View controllerName="hodek.gateapps.controller.Main"
-    xmlns:mvc="sap.ui.core.mvc"
-    xmlns="sap.m">
-    <Page id="page" title="{i18n>title}">
-    </Page>
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns="sap.m">
+	<App id="_IDGenApp">
+		<pages >
+			<Page id="idMain__Page" enableScrolling="false" title="{i18n>mainPagetitle}" class="MainPage" showHeader="true" showNavButton="true" navButtonPress="onNavBack">
+
+				<content>
+					<Button id="_IDGenButton21" icon="sap-icon://nav-back" type="Transparent" press="onNavBack" ariaLabelledBy="editButtonLabel"/>
+					<IconTabBar id="idIconTabBarMain" applyContentPadding="false" selectedKey="RouteGEAsn" expandable="false" headerBackgroundDesign="Solid" select="onSelectTabItem" stretchContentHeight="true" class="ICTBCustom">
+						<items>
+							<IconTabFilter id="_IDGenIconTabFilter1" text="GE with ASN" key="RouteGEAsn"/>
+							<IconTabFilter id="_IDGenIconTabFilter2" text="GE w/o ASN" key="RouteGEWasn" />
+							<IconTabFilter id="_IDGenIconTabFilter3"  text="In Plant STO" key="RouteSto" />
+							<IconTabFilter id="_IDGenIconTabFilter4"  text="Receipt As It Is" key="RouteAsIt" />
+							<IconTabFilter id="_IDGenIconTabFilter5" text="Reprint Gate Entry" key="RouteGEReprint" />
+							<IconTabFilter id="_IDGenIconTabFilter6" text="Cancellation Gate Entry" key="RouteCancelGE" />
+						</items>
+						<content>
+							<NavContainer id="Main__NavContainer" height="100%" width="100%"/>
+						</content>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
 </mvc:View>

@@ -1,1 +1,18 @@
 /* Enter your custom styles here */
+/* Full page background image */
+.fullPageBackground {
+    background-image: url("../utils/Images/picbg.webp"); /* Replace with your image */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+}
+
+/* Centered form styling (optional spacing) */
+.formContainer {
+    text-align: center;
+    gap: 10px; /* spacing between label, input, button */
+    background-color: white !important;
+    border: 1px solid white !important;
+    border-radius: 5px;
+}

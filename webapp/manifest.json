@@ -85,7 +85,7 @@
           "bundleName": "hodek.gateapps.i18n.i18n"
         }
       },
-      "": {
+      "vendorModel": {
         "dataSource": "mainService",
         "preload": true,
         "settings": {}
@@ -112,24 +112,77 @@
       },
       "routes": [
         {
-          "name": "RouteMain",
-          "pattern": ":?query:",
+          "name": "RouteGEAsn",
+          "pattern": "enterasn",
           "target": [
-            "TargetMain"
+            "TargetGEAsn"
+          ]
+        },
+        {
+          "name": "RouteGEAsnDetail",
+          "pattern": "asnDetail/{asn}",
+          "target": [
+            "TargetGEAsnDetail"
+          ]
+        },
+        {
+          "name": "RouteGEReprint",
+          "pattern": "reprint",
+          "target": [
+            "TargetGEReprint"
+          ]
+        },
+        {
+          "name": "RouteCancelGE",
+          "pattern": "cancel",
+          "target": [
+            "TargetCancelGE"
           ]
         }
       ],
       "targets": {
-        "TargetMain": {
-          "id": "Main",
-          "name": "Main"
+         "TargetGEReprint": {
+          "id": "ReprintGE",
+          "name": "ReprintGE",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+         "TargetGEAsn": {
+          "id": "GEAsn",
+          "name": "GEAsn",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+         "TargetGEAsnDetail": {
+          "id": "GEAsnDetail",
+          "name": "GEAsnDetail",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+        "TargetCancelGE": {
+          "id": "CancelGE",
+          "name": "CancelGE",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
         }
       }
     },
     "rootView": {
-      "viewName": "hodek.gateapps.view.App",
+      "viewName": "hodek.gateapps.view.Main",
       "type": "XML",
-      "id": "App",
+      "id": "Main",
       "async": true
     }
   }

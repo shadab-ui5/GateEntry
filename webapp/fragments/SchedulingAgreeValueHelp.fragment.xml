@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+   <TableSelectDialog
+        id="saSelectDialog"
+        title="Select Purchase Order"
+        growing="true"
+        growingThreshold="20"
+        multiSelect="true"
+        items="{SaModelVh>/PurchaseOrders}"
+        confirm=".onPurchaseOrderConfirm"
+        cancel=".onPurchaseOrderCancel"
+        search=".onPurchaseOrderSearch"
+        updateStarted=".onPurchaseOrderUpdateStarted" class="sapUiResponsiveContentPadding">
+        
+        <columns>
+            <Column width="15%"><Text text="SA No"/></Column>
+            <Column width="30%"><Text text="Supplier"/></Column>
+            <Column><Text text="Purchasing Group"/></Column>
+            <Column><Text text="Payment Terms"/></Column>
+            <Column><Text text="Plant"/></Column>
+        </columns>
+
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{SaModelVh>SchedulingAgreement}" />
+                    <Text text="{SaModelVh>SupplierName} ( {SaModelVh>Supplier} )" />
+                    <Text text="{SaModelVh>PurchasingGroupName}({SaModelVh>PurchasingGroup})" />
+                    <Text text="{SaModelVh>PaymentTermsDescription}}({SaModelVh>PaymentTerms})" />
+                    <Text text="{SaModelVh>PlantName}({SaModelVh>Plant})" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </TableSelectDialog> 
+
+</core:FragmentDefinition>

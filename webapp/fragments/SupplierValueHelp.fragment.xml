@@ -1,0 +1,32 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:table="sap.ui.table">
+    <TableSelectDialog
+        id="supplierSelectDialog"
+        title="Select Supplier"
+        multiSelect="true"
+        search=".onSupplierSearch"
+        confirm=".onSupplierConfirm"
+        cancel=".onSupplierCancel"
+        resizable="true"
+        items="{SupplierVHModel>/}" class="sapUiResponsiveContentPadding">
+
+        <columns>
+            <Column>
+                <Text text="Supplier ID" />
+            </Column>
+            <Column>
+                <Text text="Supplier Name" />
+            </Column>
+        </columns>
+
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{SupplierVHModel>Supplier}" />
+                    <Text text="{SupplierVHModel>Suppliername}" />
+                    
+                </cells>
+            </ColumnListItem>
+        </items>
+
+    </TableSelectDialog>
+</core:FragmentDefinition>

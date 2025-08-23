@@ -1,0 +1,37 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+   <TableSelectDialog
+        id="asnSelectDialog"
+        title="Select ASN Number"
+        growing="true"
+        growingThreshold="20"
+        multiSelect="true"
+        items="{AsnModelVh>/AsnNumbers}"
+        confirm=".onAsnConfirm"
+        cancel=".onAsnCancel"
+        search=".onAsnSearch"
+        updateStarted=".onAsnUpdateStarted" class="sapUiResponsiveContentPadding">
+        
+        <columns>
+            <Column width="15%"><Text text="ASN No."/></Column>
+            <!-- <Column width="30%"><Text text="Supplier"/></Column> -->
+            <!-- <Column><Text text="Company Code"/></Column> -->
+            <!-- <Column><Text text="Purchasing Group"/></Column> -->
+            <Column><Text text="Plant"/></Column>
+            <Column><Text text="Invoice No."/></Column>
+        </columns>
+
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{AsnModelVh>AsnNo'}" />
+                    <!-- <Text text="{AsnModelVh>SupplierName} ( {AsnModelVh>Supplier} )" /> -->
+                    <!-- <Text text="{AsnModelVh>CompanyCode}" /> -->
+                    <!-- <Text text="{AsnModelVh>PurchasingGroup}" /> -->
+                    <Text text="{AsnModelVh>Plant}" />
+                    <Text text="{AsnModelVh>InvoiceNo}" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </TableSelectDialog> 
+
+</core:FragmentDefinition>

@@ -1,0 +1,96 @@
+<mvc:View controllerName="hodek.gateapps.controller.ReprintGE"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:svm="sap.ui.comp.smartvariants">
+
+    <Page id="reprintpage" showHeader="false" title="Vendor Portal" showFooter="true" titleAlignment="Auto" showNavButton="false" navButtonPress="onNavBack">
+        <fb:FilterBar id="filterbar" useToolbar="false" search=".onFilterGo" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
+            <fb:filterGroupItems>
+                <!-- 🔍 Search Field -->
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem11"  name="Search" label="Search" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <SearchField id="searchField" width="90%" class="" placeholder="Search..."  search=".onAsnSearch" />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem15" name="asn" label="ASN No" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <Input id="asnField" width="90%" class="" placeholder="ASN..."  />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem16" name="invoice" label="Invoice No" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <Input id="invoiceField" width="90%" class="" placeholder="Invoice..."  />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem17" name="invoiceDate" label="Invoice Date" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                            <DateRangeSelection id="idprintPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                        </fb:control>
+                </fb:FilterGroupItem>
+            </fb:filterGroupItems>
+
+        </fb:FilterBar>
+        <Table id="idAsnTable" alternateRowColors="true" growing="true" mode="SingleSelectLeft" multiSelectMode="ClearAll" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{AsnHeaderModel>/AsnData}" itemPress="onLineItemPress" selectionChange="onSelectionChange" sticky="ColumnHeaders,HeaderToolbar">
+            <headerToolbar>
+                <OverflowToolbar id="_IDGenOverflowToolbar1">
+                    <Title id="_IDGenTitle3" text="ASN Reprint Table" level="H2"/>
+                    <ToolbarSpacer id="_IDGenToolbarSpacer"/>
+                    <Button id="idActionReprint" tooltip="Reprint" text="Re-print" icon="sap-icon://print" press="handleReprint" enabled="false"/>
+                </OverflowToolbar>
+            </headerToolbar>
+            <infoToolbar>
+                <OverflowToolbar id="vsdFilterBar" visible="false">
+                    <Text id="vsdFilterLabel" />
+                </OverflowToolbar>
+            </infoToolbar>
+            <columns>
+                <Column id="purOrder" headerMenu="columnHeaderMenu" >
+                    <Text id="_IDGenText" text="ASN No." />
+                </Column>
+                <Column id="_IDGenColumn" minScreenWidth="Tablet" demandPopin="true">
+                    <Text id="_IDGenText2" text="Invoice Number" />
+                </Column>
+                <Column id="_IDGenColumn1" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenText3" text="Invoice Date" />
+                </Column>
+                
+                <Column id="_IDGenColumn32" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenText122" text="Plant" />
+                </Column>
+                <Column id="_IDGenColumn22" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" >
+                    <Text id="_IDGenText42" text="Amount" />
+                </Column>
+                <Column id="_IDGenColumnn32" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenTextt122" text="System Date" />
+                </Column>
+                <Column id="_IDGenColumnn31" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
+                    <Text id="_IDGenTextt121" text="System Time" />
+                </Column>
+
+            </columns>
+            <items>
+                <ColumnListItem id="_IDGenColumnListItem12" vAlign="Middle">
+                    <cells>
+                        <Text id="_IDGenText51" text="{AsnHeaderModel>AsnNo}" />
+
+                        <Text id="_IDGenText81" text="{AsnHeaderModel>InvoiceNo}" />
+                        <Text id="_IDGenText922" text="{path:'AsnHeaderModel>InvoiceDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                        <Text id="_IDGenText75"  text="{AsnHeaderModel>PlantName}({AsnHeaderModel>Plant})" />
+                        <Text id="_IDGenText76"  text="{AsnHeaderModel>Amount} {AsnHeaderModel>DocumentCurrency}" />
+                        <Text id="_IDGenText923" text="{path:'AsnHeaderModel>SystemDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
+                        <Text id="_IDGenText91" text="{path:'AsnHeaderModel>SystemTime',formatter:'.formatter.formatHours'}" />
+                       
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <VBox id="idVBox_QRCode" visible="false">
+            
+        </VBox>
+    </Page>
+    
+
+</mvc:View>

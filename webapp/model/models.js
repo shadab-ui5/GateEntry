@@ -1,20 +1,183 @@
 sap.ui.define([
     "sap/ui/model/json/JSONModel",
-    "sap/ui/Device"
-], 
-function (JSONModel, Device) {
-    "use strict";
+    "sap/ui/Device",
+    "hodek/gateapps/utils/Formatter",
+    "sap/ui/core/format/DateFormat"
+],
+    function (JSONModel, Device, Formatter, DateFormat) {
+        "use strict";
 
-    return {
-        /**
-         * Provides runtime information for the device the UI5 app is running on as a JSONModel.
-         * @returns {sap.ui.model.json.JSONModel} The device model.
-         */
-        createDeviceModel: function () {
-            var oModel = new JSONModel(Device);
-            oModel.setDefaultBindingMode("OneWay");
-            return oModel;
-        }
-    };
+        return {
+            /**
+             * Provides runtime information for the device the UI5 app is running on as a JSONModel.
+             * @returns {sap.ui.model.json.JSONModel} The device model.
+             */
+            createDeviceModel: function () {
+                var oModel = new JSONModel(Device);
+                oModel.setDefaultBindingMode("OneWay");
+                return oModel;
+            },
+            initGlobalModels: function (_this) {
+                const oSupplierVHModel = new sap.ui.model.json.JSONModel([]);
+                const oPgVHModel = new sap.ui.model.json.JSONModel([]);
+                _this.getOwnerComponent().setModel(oPgVHModel, "PgVHModel");
+                _this.getOwnerComponent().setModel(oSupplierVHModel, "SupplierVHModel");
+            },
+            getUserInfo: function (_this, sUserid) {
+                return new Promise((resolve, reject) => {
+                    const oModel = _this.getOwnerComponent().getModel("vendorModel"); // assuming default model
 
-});
+                    oModel.read("/supplierListByUser", {
+                        filters: [
+                            new sap.ui.model.Filter("Userid", sap.ui.model.FilterOperator.EQ, sUserid)
+                        ],
+                        success: function (oData) {
+                            console.log("Fetched supplier list:", oData.results);
+
+                            resolve(oData);
+                        },
+                        error: function (oError) {
+                            console.error("Error fetching supplier list", oError);
+                            reject(oError)
+                        }
+                    });
+                })
+
+            },
+            _loadAsn: function (_this, sQuery, iSkip, iTop) {
+                return new Promise((resolve, reject) => {
+                    let oStartDateFormat = DateFormat.getInstance({
+                        pattern: "yyyy-MM-dd"
+                    });
+                    let oEndDateFormat = DateFormat.getInstance({
+                        pattern: "yyyy-MM-dd"
+                    });
+                    let oModel = _this.getOwnerComponent().getModel("vendorModel");
+                    let oSupplierVHModel = _this.getOwnerComponent().getModel("SupplierVHModel").getData();
+                    const uniqueSupplier = [...new Set(oSupplierVHModel.map(obj => obj.Supplier))];
+
+                    console.log("Unique Suppliers:", uniqueSupplier)
+                    // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
+                    let aFilters = [];
+                    aFilters.push(new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '01'));
+                    if (sQuery === "onFilterGo") {
+                        // Get field values from the view
+                        let asnFieldValue = _this.byId("asnField").getValue();
+                        let invoiceFieldValue = _this.byId("invoiceField").getValue();
+                        let oDateRange = _this.byId("idprintPurchDate").getDateValue();
+                        let oDateRangeTo = _this.byId("idprintPurchDate").getSecondDateValue();
+
+                        // Add ASN filter if value is provided
+                        if (asnFieldValue) {
+                            aFilters.push(new sap.ui.model.Filter("AsnNo", "Contains", asnFieldValue));
+                        }
+                        // Add Invoice No filter if value is provided
+                        if (invoiceFieldValue) {
+                            aFilters.push(new sap.ui.model.Filter("InvoiceNo", "Contains", invoiceFieldValue));
+                        }
+                        // Add Invoice Date range filter if both dates are selected
+                        if (oDateRange && oDateRangeTo) {
+                            const fromDate = oStartDateFormat.format(new Date(oDateRange)); // "2025-08-07"
+                            const toDate = oEndDateFormat.format(new Date(oDateRangeTo));     // "2025-08-08"
+                            aFilters.push(new sap.ui.model.Filter("InvoiceDate", sap.ui.model.FilterOperator.BT, fromDate, toDate));
+                        }
+                    } else if (sQuery) {
+                        let oSearch = new sap.ui.model.Filter({
+                            filters: [
+                                new sap.ui.model.Filter("AsnNo", "Contains", sQuery),
+                                new sap.ui.model.Filter("InvoiceNo", "Contains", sQuery),
+                                new sap.ui.model.Filter("Plant", "Contains", sQuery),
+                                new sap.ui.model.Filter("Vendor", "Contains", sQuery),
+                            ],
+                            and: false
+                        });
+                        aFilters.push(oSearch);
+                    }
+                    const oOrFilter = new sap.ui.model.Filter(
+                        uniqueSupplier.map(group =>
+                            new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, group)
+                        ),
+                        false // OR
+                    );
+                    aFilters.push(oOrFilter);
+
+
+                    oModel.read("/asnHdr", {
+                        filters: aFilters,
+                        urlParameters: {
+                            "$top": iTop,
+                            "$skip": iSkip,
+                            "$orderby": "AsnNo desc",
+                        },
+                        success: (oData) => {
+
+                            resolve(oData.results)
+
+                        },
+                        error: (err) => {
+                            sap.m.MessageToast.show("Error fetching Purchase Orders.");
+                            console.log(err)
+                            reject(err)
+                        }
+                    });
+                })
+            },
+            updateAsnStatus: function (_this, sAsnNo, Remark, oDialog) {
+                let oModel = _this.getOwnerComponent().getModel("vendorModel"); // Your OData model
+
+                // Build the path to the entity — make sure ASN is zero-padded exactly as backend expects
+                let sPath = `/InwardGateHeader('${sAsnNo}')`;
+
+                let oPayload = {
+                    Status: "01", // Field to update
+                    Remarks: Remark
+                };
+
+                oModel.update(sPath, oPayload, {
+                    success: function () {
+                        sap.m.MessageToast.show(`Status updated to 02 for ASN: ${sAsnNo}`);
+
+                        _this.iSkip = 0;
+                        _this.iTop = 20; // page size
+                        _this.sQuery = ""
+                        _this.getOwnerComponent().getModel("AsnHeaderModel").setProperty("/AsnData", "");
+                        _this.loadPurchaseOrderFilter()
+                        oDialog.setBusy(false);
+                        oDialog.close();
+                    },
+                    error: function (oError) {
+                        sap.m.MessageBox.error("Failed to update ASN status.\n" + oError.message);
+                        oDialog.setBusy(false);
+                    }
+                });
+            },
+            fetchInwardGateHeaderAndItems: function (_this,asnNo) {
+                const oModel = _this.getOwnerComponent().getModel("vendorModel"); // Replace with your model name
+                const sPath = `/InwardGateHeader('${asnNo}')`;
+
+                oModel.read(sPath, {
+                    urlParameters: {
+                        "$expand": "to_Item" // Fetch header + related items
+                    },
+                    success: function (oData) {
+                        console.log("Header and Items:", oData);
+
+                        // Header data
+                        const headerData = oData;
+
+                        // Items data (array)
+                        const itemsData = oData.to_Item.results;
+
+                        // You can now set it to models for your view
+                        _this.getView().setModel(new sap.ui.model.json.JSONModel(headerData), "AsnHeaderModel");
+                        _this.getView().setModel(new sap.ui.model.json.JSONModel(itemsData), "AsnItemsModel");
+                    }.bind(_this),
+                    error: function (oError) {
+                        console.error("Failed to fetch InwardGateHeader:", oError);
+                    }
+                });
+            }
+
+        };
+
+    });

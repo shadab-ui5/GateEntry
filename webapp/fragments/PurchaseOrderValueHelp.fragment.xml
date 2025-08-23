@@ -1,0 +1,35 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+   <TableSelectDialog
+        id="poSelectDialog"
+        title="Select Purchase Order"
+        growing="true"
+        growingThreshold="20"
+        multiSelect="true"
+        items="{PoModelVh>/PurchaseOrders}"
+        confirm=".onPurchaseOrderConfirm"
+        cancel=".onPurchaseOrderCancel"
+        search=".onPurchaseOrderSearch"
+        updateStarted=".onPurchaseOrderUpdateStarted" class="sapUiResponsiveContentPadding">
+        
+        <columns>
+            <Column width="15%"><Text text="PO Number"/></Column>
+            <Column width="30%"><Text text="Supplier"/></Column>
+            <Column><Text text="Company Code"/></Column>
+            <Column><Text text="Purchasing Group"/></Column>
+            <Column><Text text="Plant"/></Column>
+        </columns>
+
+        <items>
+            <ColumnListItem>
+                <cells>
+                    <Text text="{parts:[{path:'PoModelVh>PurchaseOrder'},{path:'PoModelVh>purchaseOrderText'}],formatter:'.formatter.formatPurchaseOrderText'}" />
+                    <Text text="{PoModelVh>SupplierName} ( {PoModelVh>Supplier} )" />
+                    <Text text="{PoModelVh>CompanyCode}" />
+                    <Text text="{PoModelVh>PurchasingGroup}({PoModelVh>PurchasingGroupName})" />
+                    <Text text="{PoModelVh>PlantName}({PoModelVh>Plant})" />
+                </cells>
+            </ColumnListItem>
+        </items>
+    </TableSelectDialog> 
+
+</core:FragmentDefinition>
