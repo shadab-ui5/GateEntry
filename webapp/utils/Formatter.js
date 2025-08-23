@@ -15,12 +15,14 @@ sap.ui.define([], function () {
             return sPo + " [ " + (sPoText ? sPoText : "NA") + " ]";
         },
         formatDateToYyyyMmDd: function (oDate) {
+            if (!oDate) return;
             const year = oDate.getFullYear();
             const month = String(oDate.getMonth() + 1).padStart(2, '0');
             const day = String(oDate.getDate()).padStart(2, '0');
             return `${year}-${month}-${day}`; // e.g. "2025-08-07"
         },
         formatHours: function (time) {
+            if(!time)return;
             let ms = time.ms;
             // Convert to hours, minutes, seconds
             let totalSeconds = Math.floor(ms / 1000);
@@ -36,8 +38,8 @@ sap.ui.define([], function () {
             let formattedTime = `${hours}:${minutes}:${seconds}`;
             return formattedTime;
 
-        }
-
+        },
+        
 
     };
 });

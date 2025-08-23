@@ -18,6 +18,7 @@
     id="idAsnInput"
     value=""
     maxLength="10"
+    placeholder="Scan or Type ASN.."
     width="250px"
     liveChange="onAsnLiveChange"/>
             

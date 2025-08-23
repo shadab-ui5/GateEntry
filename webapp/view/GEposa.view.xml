@@ -1,0 +1,165 @@
+<mvc:View controllerName="hodek.gateapps.controller.GEposa"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:f="sap.f"
+    xmlns:svm="sap.ui.comp.smartvariants">
+    <!-- <Page id="purchaseOrderpage" title="Vendor Portal" showFooter="true" titleAlignment="Auto" showNavButton="true" navButtonPress="onNavBack"> -->
+    <f:DynamicPage id="_IDGenDynamicPage2" headerExpanded="{/headerExpanded}">
+        <f:title>
+            <f:DynamicPageTitle id="_IDGenDynamicPageTitle1">
+                <f:navigationActions>
+                    <Button id="_IDGenButton4" text="Create Gate Entry" type="Emphasized" press="onSave"/>
+                </f:navigationActions>
+                <!-- <f:heading>
+                        <Title id="_IDGenTitle4" text="{RoutePoData>/PoHeader/PurchaseOrder}" level="H1"/>
+                    </f:heading>
+                    <f:expandedContent>
+                        <Label id="_IDGenLabel15" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+
+                    </f:expandedContent>
+                    <f:snappedContent>
+                        <Label id="_IDGenLabel16" text="{=${RoutePoData>/PoHeader/purchaseOrderText}?${RoutePoData>/PoHeader/purchaseOrderText}:'NA'}"/>
+
+                    </f:snappedContent> -->
+            </f:DynamicPageTitle>
+        </f:title>
+        <f:header>
+            <f:DynamicPageHeader id="_IDGenDynamicPageHeader2">
+                <f:content>
+                    <!-- <Panel id="idPanelRAPO" class="sapUiContentPadding" headerText="General Data" visible="true"> -->
+                    <HBox>
+
+                        <VBox width="20%">
+                            <Label text="Plant" required="true"/>
+
+                            <ComboBox id="idDropdownPlant" selectedKey="" width="75%" selectionChange="onSelectPlant" items="{
+					    path: '/',
+                        sorter: { path: 'Plant' }
+                    }">
+                                <core:Item key="{Plant}" text="{Plant} - {PlantName}"/>
+                            </ComboBox>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Purchase Order" required="true"/>
+                            <Input id="idRAPO_PO_Order" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="POValueHelp" maxLength="10" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Doc./Inv. No" required="true"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Date"/>
+                            <Input id="idRAPO_Date" enabled="false" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Time"/>
+                            <Input id="idRAPO_Time" enabled="false" width="75%"/>
+                        </VBox>
+                    </HBox>
+                    <HBox class="sapUiSmallMarginTop">
+                        <VBox width="20%">
+                            <Label text="Invoice/DC Date" required="true"/>
+                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" />
+                        </VBox>
+
+
+                        <VBox width="20%">
+                            <Label text="Vehical Number" required="true"/>
+                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Transporter" required="true"/>
+                            <Input id="idRAPO_Trasporter" showValueHelp="true" valueHelpRequest="transporterValueHelp" maxLength="50" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Eway Bill Number" required="true"/>
+                            <Input id="idRAPO_EwayNo" maxLength="50" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Eway Bill Date" required="true"/>
+                            <DatePicker id="idRAPO_EwayDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox class="sapUiSmallMarginTop">
+                        <VBox width="20%">
+                            <Label text="Amount" required="true"/>
+                            <Input id="idRAPO_Amount" change="onChangeRAPOAmount" type="Number" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="LR Date"/>
+                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="yyyy-MM-dd" enabled="true" />
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="LR Number"/>
+                            <Input id="idRAPO_LR_No" maxLength="25" width="75%"/>
+                        </VBox>
+                        <VBox width="20%">
+                            <Label text="Fiscal Year"/>
+                            <Input id="idFiscalYear" value="" enabled="false" width="75%"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- <VBox class="sapUiMediumMarginTop">
+                        <Toolbar>
+                            <Title text="Item Data"/>
+                        </Toolbar>
+
+                    </VBox> -->
+                </f:content>
+            </f:DynamicPageHeader>
+        </f:header>
+        <f:content>
+            <VBox>
+                <Table id="idTable_RAPO" items="{path: '/'}" sticky="ColumnHeaders,HeaderToolbar">
+                    <headerToolbar>
+                        <OverflowToolbar>
+                            <ToolbarSpacer/>
+                            <Button icon="sap-icon://add" text="Add" press="onAddReceiptAsPOTableItem"/>
+                        </OverflowToolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column>
+                            <Text text="Material" />
+                        </Column>
+                        <Column>
+                            <Text text="Material Description" />
+                        </Column>
+                        <Column>
+                            <Text text="Item No" />
+                        </Column>
+                        <Column>
+                            <Text text="Quantity" />
+                        </Column>
+                        <Column>
+                            <Text text="Unit" />
+                        </Column>
+                        <Column>
+                            <Text text="Action" />
+                        </Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Input value="{Material}" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="material_RAPOValueHelp"/>
+                                <!-- <Text text="{Material}" /> -->
+                                <Text text="{PurchaseOrderItemText}" />
+                                <Text text="{PurchaseOrderItem}"/>
+                                <!-- <Input value="{AvailableQuantity}" liveChange="onChangeRAPOItemQuantity" type="Tel" /> -->
+                                <Input id="idInpRAPOItemQuantity" value="{EnteredQuantity}" change="onChangeRAPOItemQuantity" type="Number" enabled="{isMaterialSelected}" />
+                                <Text text="{Unit}" />
+                                <Button icon="sap-icon://delete" press="onDeleteReceiptAsPoItem" visible="{isDeletable}"></Button>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+                <VBox id="idVBox_QRCode" visible="false">
+
+                </VBox>
+            </VBox>
+        </f:content>
+    </f:DynamicPage>
+    <!-- </Page> -->
+</mvc:View>

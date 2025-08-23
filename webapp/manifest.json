@@ -113,9 +113,16 @@
       "routes": [
         {
           "name": "RouteGEAsn",
-          "pattern": "enterasn",
+          "pattern": "",
           "target": [
             "TargetGEAsn"
+          ]
+        },
+        {
+          "name": "RouteGEWasn",
+          "pattern": "gateEntrybyPoSa",
+          "target": [
+            "TargetGEposa"
           ]
         },
         {
@@ -153,6 +160,15 @@
          "TargetGEAsn": {
           "id": "GEAsn",
           "name": "GEAsn",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+         "TargetGEposa": {
+          "id": "GEposa",
+          "name": "GEposa",
           "viewType": "XML",
           "viewLevel": 2,
           "controlId": "Main__NavContainer",

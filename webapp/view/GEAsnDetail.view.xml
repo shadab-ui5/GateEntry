@@ -12,7 +12,7 @@
         <f:title>
             <f:DynamicPageTitle id="_IDGenDynamicPageTitle2">
                 <f:actions>
-                    <Button id="_IDGenButton9" type="Emphasized" text="Save" press="onSave" class="sapUiSmallMarginEnd"/>
+                    <Button id="_IDGenButton9" type="Emphasized" text="Create Gate Entry" press="onSave" class="sapUiSmallMarginEnd"/>
                 </f:actions>
                 <f:heading>
                     <Title id="_IDGenTitle1" text="{AsnHeaderModel>/Ponumber}" level="H1"/>
@@ -31,10 +31,10 @@
         <f:header>
             <f:DynamicPageHeader id="_IDGenDynamicPageHeader2">
                 <f:content>
-                    <HBox id="_IDGenHBox5">
+                    <HBox id="_IDGenHBox5" class="sapUiSmallMarginBottom">
                         <VBox id="_IDGenVBox5" width="20%">
                             <Label id="_IDGenLabel5" text="Invoice Number" required="true"/>
-                            <Text id="idDocInvNo" text="{AsnHeaderModel>/InvoiceNo}" change="onChangeDocInvNo" maxLength="16" width="75%"/>
+                            <Text id="idDocInvNo" text="{AsnHeaderModel>/InvoiceNo}" width="75%"/>
                         </VBox>
                         <VBox id="_IDGenVBox20" width="20%">
                             <Label id="_IDGenLabel26" text="Plant" required="true"/>
@@ -50,10 +50,10 @@
                         </VBox>
                         <VBox id="_IDGenVBox22" width="20%">
                             <Label id="_IDGenLabel24" text="Time"/>
-                            <Text id="idRAPO_Time" text="{AsnHeaderModel>/SystemTime}" width="75%"/>
+                            <Text id="idRAPO_Time" text="{ path:'AsnHeaderModel>/SystemTime',formatter:'.formatter.formatHours'}" width="75%"/>
                         </VBox>
                     </HBox>
-                    <HBox id="_IDGenHBox2" class="sapUiTinyMarginTop">
+                    <HBox id="_IDGenHBox2" class="sapUiSmallMarginBottom">
 
                         <VBox id="_IDGenVBox6" width="20%">
                             <Label id="_IDGenLabel6" text="Invoice Date" required="true"/>
@@ -77,7 +77,7 @@
                         </VBox>
                     </HBox>
 
-                    <HBox id="_IDGenHBox3" class="sapUiTinyMarginTop">
+                    <HBox id="_IDGenHBox3">
                         <VBox id="_IDGenVBox9" width="20%">
                             <Label id="_IDGenLabel9" text="Amount" />
                             <Text id="idRAPO_Amount" text="{AsnHeaderModel>/Amount}" width="75%"/>
@@ -88,7 +88,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox11" width="20%">
                             <Label id="_IDGenLabel11" text="LR Date"/>
-                            <Text id="idRAPO_LR_Date" width="75%" text="{AsnHeaderModel>/Lrdate}" class="sapUiSmallMarginBottom"/>
+                            <Text id="idRAPO_LR_Date" width="75%" text="{ path: 'AsnHeaderModel>/Lrdate', formatter: '.formatter.formatDateToYyyyMmDd' }" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox id="_IDGenVBox111" width="20%" visible="false">
                             <Label id="_IDGenLabel111" text="Supplier"/>

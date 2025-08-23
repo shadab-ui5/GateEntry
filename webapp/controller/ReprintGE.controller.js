@@ -266,10 +266,10 @@ sap.ui.define([
             doc.setFont("Helvetica", 'bold');
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
-
-            doc.text(2, 5, `Gate Entry Number: IN ${qrData.AsnNo}`);
-            doc.text(2, 9, `Invoice Number : ${qrData.InvoiceNo}`);
-            doc.text(2, 13, `Invoice Date: ${formattedInvDate}`);
+            doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 9, `Gate Entry Number: IN ${qrData.AsnNo}`);
+            doc.text(2, 13, `Invoice Number : ${qrData.InvoiceNo}`);
+            doc.text(2, 17, `Invoice Date: ${formattedInvDate}`);
 
             // Get the canvas element for the QR code
             var canvas = document.getElementById('qrCanvas');
@@ -277,7 +277,7 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 17, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
+            doc.text(2, 21, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
 
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);

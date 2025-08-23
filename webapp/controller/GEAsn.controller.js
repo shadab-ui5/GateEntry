@@ -52,7 +52,11 @@ sap.ui.define([
 
         },
         _onRouteMatched: function (oEvent) {
-
+            let oInput = this.byId("idAsnInput");
+            oInput.setValue("")
+            if (oInput) {
+                oInput.focus();
+            }
         },
         callDetailScreen: function (asn) {
             const oRouter = this.getOwnerComponent().getRouter();
@@ -70,7 +74,8 @@ sap.ui.define([
             }
         },
         onAfterRendering: function () {
-            var oInput = this.byId("idAsnInput");
+            let oInput = this.byId("idAsnInput");
+            oInput.setValue("")
             if (oInput) {
                 oInput.focus();
             }
@@ -85,7 +90,19 @@ sap.ui.define([
                 this.callDetailScreen(sValue);
 
             }
+        },
+        onSubmitPress: function (oEvent) {
+            const sValue = oEvent.getParameter("value");
+
+            // Check if 10 characters entered
+            if (sValue.length === 10) {
+                console.log("10-digit ASN entered:", sValue);
+
+                this.callDetailScreen(sValue);
+
+            }
         }
+
 
 
 

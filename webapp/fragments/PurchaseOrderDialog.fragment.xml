@@ -1,0 +1,41 @@
+<core:FragmentDefinition xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    
+    <Dialog id="valueHelpDialog" title="Select Value">
+        <IconTabBar>
+            <items>
+                <IconTabFilter text="Purchase Order">
+                    <SearchField id="searchFilter1" liveChange="onSearchPoList" placeholder="Search" />
+                    <List
+                        id="list1"
+                        items="{
+                            path: '/filter1Items'
+                        }">
+                        <StandardListItem
+                            title="{PurchaseOrder}"
+                            description="{PurchaseOrderItemText}"
+                            type="Active"
+                            press="onListItemPress" />
+                    </List>
+                </IconTabFilter>
+                <IconTabFilter text="Scheduling Aggrement">
+                    <SearchField id="searchFilter2" liveChange="onSearchPoList" placeholder="Search" />
+                    <List
+                        id="list2"
+                        items="{
+                            path: '/filter2Items'
+                        }">
+                        <StandardListItem
+                            title="{SchedulingAgreement}"
+                            description="{PurchasingDocumentItemText}"
+                            type="Active"
+                            press="onListItemPress" />
+                    </List>
+                </IconTabFilter>
+            </items>
+        </IconTabBar>
+        <endButton>
+            <Button text="Close" press="onDialogClose" />
+        </endButton>
+    </Dialog>
+</core:FragmentDefinition>

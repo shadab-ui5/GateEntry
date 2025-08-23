@@ -2,9 +2,11 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/Device",
     "hodek/gateapps/utils/Formatter",
-    "sap/ui/core/format/DateFormat"
+    "sap/ui/core/format/DateFormat",
+    "sap/m/MessageToast",
+    "sap/m/MessageBox"
 ],
-    function (JSONModel, Device, Formatter, DateFormat) {
+    function (JSONModel, Device, Formatter, DateFormat,MessageToast,MessageBox) {
         "use strict";
 
         return {
@@ -59,7 +61,7 @@ sap.ui.define([
                     console.log("Unique Suppliers:", uniqueSupplier)
                     // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
                     let aFilters = [];
-                    aFilters.push(new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '01'));
+                    aFilters.push(new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03'));
                     if (sQuery === "onFilterGo") {
                         // Get field values from the view
                         let asnFieldValue = _this.byId("asnField").getValue();
@@ -151,7 +153,7 @@ sap.ui.define([
                     }
                 });
             },
-            fetchInwardGateHeaderAndItems: function (_this,asnNo) {
+            fetchInwardGateHeaderAndItems: function (_this, asnNo) {
                 const oModel = _this.getOwnerComponent().getModel("vendorModel"); // Replace with your model name
                 const sPath = `/InwardGateHeader('${asnNo}')`;
 
@@ -169,14 +171,168 @@ sap.ui.define([
                         const itemsData = oData.to_Item.results;
 
                         // You can now set it to models for your view
-                        _this.getView().setModel(new sap.ui.model.json.JSONModel(headerData), "AsnHeaderModel");
-                        _this.getView().setModel(new sap.ui.model.json.JSONModel(itemsData), "AsnItemsModel");
+                        const oView = _this.getView();
+                        oView.getModel('AsnHeaderModel').setData(headerData);
+                        oView.getModel('AsnItemsModel').setData(itemsData);
                     }.bind(_this),
                     error: function (oError) {
                         console.error("Failed to fetch InwardGateHeader:", oError);
                     }
                 });
-            }
+            },
+            updateGateEntryId: function (_this, asnNo, newGateEntryId) {
+                const oModel = _this.getOwnerComponent().getModel("vendorModel");
+
+                // Path to the specific InwardGateHeader entity
+                const sPath = `/InwardGateHeader('${asnNo}')`;
+
+                // Only sending the field to update
+                const oPayload = {
+                    GateEntryId: newGateEntryId,
+                    Status:'03'
+                };
+
+                oModel.update(sPath, oPayload, {
+                    success: function () {
+                        MessageToast.show("Gate Entry ID updated successfully.");
+                    },
+                    error: function (oError) {
+                        console.error("Failed to update Gate Entry ID:", oError);
+                        MessageBox.error("Error updating Gate Entry ID. Please try again.");
+                    }
+                });
+            },
+            _loadPurchaseOrders: function (_this, sQuery, iSkip, iTop) {
+                return new Promise((resolve, reject) => {
+                    let oModel = _this.getOwnerComponent().getModel("vendorModel");
+                    let oSupplierVHModel = _this.getOwnerComponent().getModel("SupplierVHModel").getData();
+                    const uniqueSupplier = [...new Set(oSupplierVHModel.map(obj => obj.Supplier))];
+                    console.log("Unique Suppliers:", uniqueSupplier)
+                    // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
+                    let aFilters = [];
+                    if (sQuery) {
+                        let oSearch = new sap.ui.model.Filter({
+                            filters: [
+                                new sap.ui.model.Filter("PurchaseOrder", "Contains", sQuery),
+                                new sap.ui.model.Filter("Supplier", "Contains", sQuery)
+                            ],
+                            and: false
+                        });
+                        aFilters.push(oSearch);
+                    } else {
+                        const oOrFilter = new sap.ui.model.Filter(
+                            uniqueSupplier.map(group =>
+                                new sap.ui.model.Filter("Supplier", sap.ui.model.FilterOperator.EQ, group)
+                            ),
+                            false // OR
+                        );
+                        aFilters.push(oOrFilter);
+                    }
+
+                    oModel.read("/PoHdr", {
+                        filters: aFilters,
+                        urlParameters: {
+                            "$top": iTop,
+                            "$skip": iSkip
+                        },
+                        success: (oData) => {
+                            const uniqueResults = oData.results.filter((item, index, self) =>
+                                index === self.findIndex(t => JSON.stringify(t) === JSON.stringify(item))
+                            );
+                            let oModel = _this.getOwnerComponent().getModel("PoModelVh");
+                            oModel.setProperty("/PurchaseOrders", uniqueResults);
+                            resolve(oData.results)
+
+                        },
+                        error: (err) => {
+                            sap.m.MessageToast.show("Error fetching Purchase Orders.");
+                            reject(err)
+                        }
+                    });
+                })
+            },
+            _loadSchedulingAgre: function (_this, sQuery, iSkip, iTop) {
+                return new Promise((resolve, reject) => {
+                    let oModel = _this.getOwnerComponent().getModel("vendorModel");
+                    let oSupplierVHModel = _this.getOwnerComponent().getModel("SupplierVHModel").getData();
+                    const uniqueSupplier = [...new Set(oSupplierVHModel.map(obj => obj.Supplier))];
+                    console.log("Unique Suppliers:", uniqueSupplier)
+                    // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
+                    let aFilters = [];
+                    if (sQuery) {
+                        let oSearch = new sap.ui.model.Filter({
+                            filters: [
+                                new sap.ui.model.Filter("SchedulingAgreement", "Contains", sQuery),
+                                new sap.ui.model.Filter("Supplier", "Contains", sQuery)
+                            ],
+                            and: false
+                        });
+                        aFilters.push(oSearch);
+                    }
+                    else {
+                        const oOrFilter = new sap.ui.model.Filter(
+                            uniqueSupplier.map(group =>
+                                new sap.ui.model.Filter("Supplier", sap.ui.model.FilterOperator.EQ, group)
+                            ),
+                            false // OR
+                        );
+                        aFilters.push(oOrFilter);
+                    }
+
+                    oModel.read("/SaHdr", {
+                        filters: aFilters,
+                        urlParameters: {
+                            "$top": iTop,
+                            "$skip": iSkip
+                        },
+                        success: (oData) => {
+                            const uniqueResults = oData.results.filter((item, index, self) =>
+                                index === self.findIndex(t => JSON.stringify(t) === JSON.stringify(item))
+                            );
+                            let oModel = _this.getOwnerComponent().getModel("SaModelVh");
+                            oModel.setProperty("/PurchaseOrders", uniqueResults);
+                            resolve(oData.results)
+
+                        },
+                        error: (err) => {
+                            sap.m.MessageToast.show("Error fetching Purchase Orders.");
+                            reject(err)
+                        }
+                    });
+                })
+            },
+            _loadPlants: function (_this, sQuery, iSkip, iTop, fnCallback) {
+                let oModel = _this.getOwnerComponent().getModel("vendorModel");
+
+                let sUser = sap.ushell?.Container?.getUser().getId() || "CB9980000018";
+                // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
+                let aFilters = [];
+
+                if (sQuery) {
+                    let oSearch = new sap.ui.model.Filter({
+                        filters: [
+                            new sap.ui.model.Filter("Plant", "Contains", sQuery),
+                            new sap.ui.model.Filter("PlantName", "Contains", sQuery)
+                        ],
+                        and: false
+                    });
+                    aFilters.push(oSearch);
+                }
+
+                oModel.read("/plantVh", {
+                    filters: aFilters,
+                    urlParameters: {
+                        "$top": iTop,
+                        "$skip": iSkip
+                    },
+                    success: (oData) => {
+                        fnCallback(oData);
+                    },
+                    error: () => {
+                        sap.m.MessageToast.show("Error fetching Plants.");
+                    }
+                });
+            },
 
         };
 
