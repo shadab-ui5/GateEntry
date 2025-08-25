@@ -24,6 +24,7 @@ sap.ui.define([
                 "$top": 200000
             };
             let that = this;
+            this.sAsn = "";
             this.selectedPOSchAggrVendor = "";
             const oModel = new sap.ui.model.json.JSONModel([]);
             const oModelHeader = new sap.ui.model.json.JSONModel([]);
@@ -36,14 +37,24 @@ sap.ui.define([
         },
         formatter: Formatter,
         _onRouteMatched: function (oEvent) {
+            this.getView().setBusy(true);
             this.getView().getModel("AsnItemsModel").setProperty("/Results", []);
-            this.sAsn = oEvent.getParameter("arguments").asn;
-            if (!this.sAsn) {
+            this.getView().getModel("AsnHeaderModel").setProperty("/Results", []);
+            this.getView().getModel("AsnItemsModel").refresh();
+            this.getView().getModel("AsnHeaderModel").refresh();
+
+            let currentAsn = oEvent.getParameter("arguments").asn;
+            if (!currentAsn) {
+                this.getView().setBusy(false);
                 this.onNavBack();
                 return;
             }
-            Models.fetchInwardGateHeaderAndItems(this, this.sAsn);
-
+            if (this.sAsn !== currentAsn) {
+                this.sAsn = currentAsn;
+                Models.fetchInwardGateHeaderAndItems(this, this.sAsn);
+            }else{
+                this.getView().setBusy(false);
+            }
         },
         onNavBack: function () {
             var oHistory = sap.ui.core.routing.History.getInstance();
@@ -66,11 +77,11 @@ sap.ui.define([
             let InvoiceNo = that.getView().byId("idDocInvNo").getText();
             let InvoiceDate = that.getView().byId("idRAPO_InvDate").getText(),
                 Vendor = that.getView().byId("idSupplier").getText();
-            let oQrCodeData={
+            let oQrCodeData = {
                 InvoiceNo,
                 InvoiceDate,
                 Vendor,
-                "AsnNo":this.sAsn
+                "AsnNo": this.sAsn
             }
             MessageBox.confirm("Are you sure you want to save this Gate Entry?", {
                 title: "Confirm Save",
@@ -216,7 +227,7 @@ sap.ui.define([
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },
 
-        
+
 
 
 

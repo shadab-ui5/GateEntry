@@ -149,7 +149,7 @@
                                             <!-- <Text id="_IDGenText" value="{Material}" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="material_RAPOValueHelp"/> -->
                                             <Text id="_" text="{AsnItemsModel>BaseUnit}" />
                                             <Text id="idInpRAPOItemQuantity" text="{AsnItemsModel>Postedquantity}" />
-                                            <Text text="{AsnItemsModel>OrderQuantity}" />
+                                            <Text text="{AsnItemsModel>Uom}" />
                                             <Text text="{AsnItemsModel>postedquantity}" />
                                         </cells>
                                     </ColumnListItem>

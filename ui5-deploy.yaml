@@ -1,5 +1,3 @@
-# yaml-language-server: $schema=https://sap.github.io/ui5-tooling/schema/ui5.yaml.json
-
 specVersion: "3.1"
 metadata:
   name: hodek.gateapps
@@ -16,10 +14,10 @@ builder:
         target:
           destination: CONNECT_DEV080
           url: https://my426294.s4hana.cloud.sap
-          authenticationType: reentranceTicket # SAML support for vscode
+          authenticationType: reentranceTicket
         app:
           name: ZGATEAPPS
-          package: ZMM_GATE_APPS
-          transport: REPLACE_WITH_TRANSPORT
+          package: ZMM_VENDOR_PORTAL
+          transport: TMOK900379
         exclude:
           - /test/

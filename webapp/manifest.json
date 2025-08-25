@@ -126,6 +126,20 @@
           ]
         },
         {
+          "name": "RouteGEPlantSto",
+          "pattern": "gateEntryPlantSto",
+          "target": [
+            "TargetGEPlantSto"
+          ]
+        },
+        {
+          "name": "RouteGEAsItIs",
+          "pattern": "gateEntrybyasitis",
+          "target": [
+            "TargetGEAsItIs"
+          ]
+        },
+        {
           "name": "RouteGEAsnDetail",
           "pattern": "asnDetail/{asn}",
           "target": [
@@ -169,6 +183,24 @@
          "TargetGEposa": {
           "id": "GEposa",
           "name": "GEposa",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+         "TargetGEPlantSto": {
+          "id": "GEPlantSto",
+          "name": "GEPlantSto",
+          "viewType": "XML",
+          "viewLevel": 2,
+          "controlId": "Main__NavContainer",
+          "controlAggregation": "pages",
+          "clearControlAggregation": true
+        },
+         "TargetGEAsItIs": {
+          "id": "GERetrunAsItIs",
+          "name": "GERetrunAsItIs",
           "viewType": "XML",
           "viewLevel": 2,
           "controlId": "Main__NavContainer",
