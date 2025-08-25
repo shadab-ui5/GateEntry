@@ -1116,9 +1116,12 @@ sap.ui.define([
             let isQuantityEntered = true;
             var itemData = [];
             this.getView().byId("idTable_RAII").getModel().getData().filter(item => {
-                if (item.AvailableQuantity === "" || item.EnteredQuantity === "") {
-                    isQuantityEntered = false;
-                }
+                if (item.Product === "") {
+                        isMaterialSelected = false;
+                    }
+                    // if (item.AvailableQuantity === "") {
+                    //     isQuantityEntered = false;
+                    // }
                 let obj = {
                     "Ponumber": "",
                     "LineItem": item.Itemno,
@@ -1131,10 +1134,14 @@ sap.ui.define([
 
                 itemData.push(obj);
             });
-            if (!isQuantityEntered) {
-                MessageToast.show("Enter Item Quantity");
-                return;
-            }
+            if (!isMaterialSelected) {
+                    MessageToast.show("Select Material");
+                    return;
+                }
+                // if (!isQuantityEntered) {
+                //     MessageToast.show("Enter Item Quantity");
+                //     return;
+                // }
 
 
 

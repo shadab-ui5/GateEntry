@@ -67,7 +67,7 @@ sap.ui.define([
             // that.getVendor("");
             oRouter.getRoute("RouteGEAsItIs").attachPatternMatched(this._onRouteMatched, this);
         },
-        _onRouteMatched:function(){},
+        _onRouteMatched: function () { },
 
         onRAPOInvoiceDateChange: function (oEvent) {
             var oDatePicker = oEvent.getSource();
@@ -1114,9 +1114,13 @@ sap.ui.define([
             }
 
             let isQuantityEntered = true;
+            let isMaterialSelected = true;
             var itemData = [];
             this.getView().byId("idTable_RAII").getModel().getData().filter(item => {
-                if (item.AvailableQuantity === "" || item.EnteredQuantity === "") {
+                if (item.Product === "") {
+                    isMaterialSelected = false;
+                }
+                if (item.AvailableQuantity === "") {
                     isQuantityEntered = false;
                 }
                 let obj = {
@@ -1125,12 +1129,15 @@ sap.ui.define([
                     "Material": item.Product,
                     "Materialdesc": item.ProductDescription,
                     "Quantity": "",
-                    "Postedquantity": ""
-                };
+                    "Postedquantity": parseFloat(item.AvailableQuantity).toFixed(2),
 
-
+                }
                 itemData.push(obj);
             });
+            if (!isMaterialSelected) {
+                MessageToast.show("Select Material");
+                return;
+            }
             if (!isQuantityEntered) {
                 MessageToast.show("Enter Item Quantity");
                 return;
