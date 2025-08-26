@@ -64,7 +64,7 @@ sap.ui.define([
             let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
             this.byId("idRAII_Time").setValue(currentTime);
             that.getPlantData();
-            // that.getVendor("");
+            that.getVendor("");
             oRouter.getRoute("RouteGEAsItIs").attachPatternMatched(this._onRouteMatched, this);
         },
         _onRouteMatched: function () { },
@@ -113,7 +113,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/GateEntryInvoiceNoF4Help", {
+            this.f4HelpModel.read("/asnHdr", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -143,11 +143,11 @@ sap.ui.define([
                 this.getView().setBusy(false);
             } else {
                 oValidatedComboBox.setValueState(ValueState.None);
-
+                this.getMaretial(sSelectedKey);
                 this.clearFieldsOnClearPlant();
                 // this.getPurchaseOrders(sSelectedKey); //load purchase order list
                 // this.getSchAggrement(sSelectedKey); //load scheduling agreement list
-                this.getMaretial(sSelectedKey); //load material/product list
+                //load material/product list
                 //this.getChallanData(sSelectedKey);
             }
         },
@@ -249,7 +249,7 @@ sap.ui.define([
             });
 
             this.f4HelpModel.read("/SupplierVh", {
-                filters: [filter],
+                // filters: [filter],
                 urlParameters: that.oParameters,
                 success: function (oResponse) {
                     that.aVendorData = oResponse.results;

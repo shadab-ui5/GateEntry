@@ -64,10 +64,10 @@ sap.ui.define([
             let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
             this.byId("idRAII_Time").setValue(currentTime);
             that.getPlantData();
-            // that.getVendor("");   //need to check with team
+            that.getVendor("");   //need to check with team
             oRouter.getRoute("RouteGEAsItIs").attachPatternMatched(this._onRouteMatched, this);
         },
-        _onRouteMatched:function(){},
+        _onRouteMatched: function () { },
 
         onRAPOInvoiceDateChange: function (oEvent) {
             var oDatePicker = oEvent.getSource();
@@ -113,7 +113,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/GateEntryInvoiceNoF4Help", {
+            this.f4HelpModel.read("/asnHdr", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -143,11 +143,11 @@ sap.ui.define([
                 this.getView().setBusy(false);
             } else {
                 oValidatedComboBox.setValueState(ValueState.None);
-
+                this.getMaretial(sSelectedKey); //load material/product list
                 this.clearFieldsOnClearPlant();
                 // this.getPurchaseOrders(sSelectedKey); //load purchase order list
                 // this.getSchAggrement(sSelectedKey); //load scheduling agreement list
-                this.getMaretial(sSelectedKey); //load material/product list
+
                 //this.getChallanData(sSelectedKey);
             }
         },
@@ -249,7 +249,7 @@ sap.ui.define([
             });
 
             this.f4HelpModel.read("/SupplierVh", {
-                filters: [filter],
+                // filters: [filter],
                 urlParameters: that.oParameters,
                 success: function (oResponse) {
                     that.aVendorData = oResponse.results;
@@ -1117,11 +1117,11 @@ sap.ui.define([
             var itemData = [];
             this.getView().byId("idTable_RAII").getModel().getData().filter(item => {
                 if (item.Product === "") {
-                        isMaterialSelected = false;
-                    }
-                    // if (item.AvailableQuantity === "") {
-                    //     isQuantityEntered = false;
-                    // }
+                    isMaterialSelected = false;
+                }
+                // if (item.AvailableQuantity === "") {
+                //     isQuantityEntered = false;
+                // }
                 let obj = {
                     "Ponumber": "",
                     "LineItem": item.Itemno,
@@ -1135,13 +1135,13 @@ sap.ui.define([
                 itemData.push(obj);
             });
             if (!isMaterialSelected) {
-                    MessageToast.show("Select Material");
-                    return;
-                }
-                // if (!isQuantityEntered) {
-                //     MessageToast.show("Enter Item Quantity");
-                //     return;
-                // }
+                MessageToast.show("Select Material");
+                return;
+            }
+            // if (!isQuantityEntered) {
+            //     MessageToast.show("Enter Item Quantity");
+            //     return;
+            // }
 
 
 

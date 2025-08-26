@@ -7,23 +7,20 @@
     xmlns:f="sap.f"
     xmlns:upload="sap.m.upload"
     xmlns:svm="sap.ui.comp.smartvariants">
-    <Page id="asnCreationpage" title="{i18n>title}" class="fullPageBackground" showFooter="true" titleAlignment="Auto"  showNavButton="true" showHeader="false" navButtonPress="onNavBack">
-       <HBox width="100%" justifyContent="Center" alignItems="Center" height="90%">
-       <VBox class="formContainer" justifyContent="Center" alignItems="Center" width="32rem" height="10rem" >
-            <!-- Label -->
-            <Label text="Enter ASN Number:" labelFor="idAsnInput"/>
-            
-            <!-- Input -->
-            <Input
-    id="idAsnInput"
-    value=""
-    maxLength="10"
-    placeholder="Scan or Type ASN.."
-    width="250px"
-    liveChange="onAsnLiveChange"/>
-            
-            <!-- Submit Button -->
-            <Button text="Submit" type="Emphasized" press="onSubmitPress"/>
-        </VBox></HBox>
+    <Page id="asnCreationpage" title="{i18n>title}" class="fullPageBackground" showFooter="true" titleAlignment="Auto" showNavButton="true" showHeader="false" navButtonPress="onNavBack">
+        <HBox width="100%" justifyContent="Center" alignItems="Center" height="90%">
+            <VBox class="formContainer" justifyContent="Start" alignItems="Center" width="32rem" height="10rem">
+
+                <!-- Label -->
+                <Label text="Enter ASN Number:" design="Bold" labelFor="idAsnInput" class="formLabel" width="100%"/>
+
+                <!-- Input -->
+                <SearchField id="idAsnInput" value=""  maxLength="10" placeholder="Scan or Type ASN.." search="onSubmitPress" width="350px" liveChange="onAsnLiveChange"/>
+
+                <!-- Submit Button -->
+                <Button text="Search" type="Emphasized" press="onSubmitPress" class="formButton"/>
+
+            </VBox>
+        </HBox>
     </Page>
 </mvc:View>

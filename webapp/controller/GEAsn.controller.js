@@ -81,7 +81,7 @@ sap.ui.define([
             }
         },
         onAsnLiveChange: function (oEvent) {
-            const sValue = oEvent.getParameter("value");
+            const sValue = oEvent.getParameter("newValue");
 
             // Check if 10 characters entered
             if (sValue.length === 10) {
@@ -92,14 +92,15 @@ sap.ui.define([
             }
         },
         onSubmitPress: function (oEvent) {
-            const sValue = oEvent.getParameter("value");
+            const sValue = this.getView().byId('idAsnInput').getValue();
 
             // Check if 10 characters entered
             if (sValue.length === 10) {
                 console.log("10-digit ASN entered:", sValue);
 
                 this.callDetailScreen(sValue);
-
+            }else{
+                sap.m.MessageToast.show("Enter 10 digit ASN Number")
             }
         }
 
