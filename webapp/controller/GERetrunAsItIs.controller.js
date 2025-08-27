@@ -103,7 +103,8 @@ sap.ui.define([
             var aFinalFilter = new sap.ui.model.Filter({
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
-                    new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedVendor)
+                    new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedVendor),
+                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03'),
                 ],
                 and: true
             });
@@ -113,7 +114,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/asnHdr", {
+            this.f4HelpModel.read("/gateHrd", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -843,6 +844,7 @@ sap.ui.define([
                                 return oContext.getObject();
                             });
                             selectedInput.setValue(selectedValue[0].Supplier);
+                            that.vendorValue=`${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
                             that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
                     },
@@ -1083,8 +1085,8 @@ sap.ui.define([
             let oDateFormat = DateFormat.getInstance({
                 pattern: "yyyy-MM-dd'T'00:00:00"
             });
-            let SystemDate = oDateFormat.format(new Date(oView.byId("idRAPO_Date").getValue())),
-                time = oView.byId("idRAPO_Time").getValue().split(":"),
+            let SystemDate = oDateFormat.format(new Date(oView.byId("idRAII_Date").getValue())),
+                time = oView.byId("idRAII_Time").getValue().split(":"),
                 hours = time[0].length === 1 ? ('0' + time[0]) : time[0],
                 SystemTime = `PT${hours}H${time[1]}M${time[1]}S`;
 
@@ -1092,7 +1094,7 @@ sap.ui.define([
             time = oView.byId("idRAPO_Time").getValue().split(":"),
             hours = time[0].length === 1 ? ('0' + time[0]) : time[0],
             SystemTime = `PT${hours}H${time[1]}M${time[1]}S`;*/
-            var Fiscalyear = oView.byId("idFiscalYear").getValue(),
+            var Fiscalyear = oView.byId("idRAII_FiscalYear").getValue(),
                 InvoiceNo = oView.byId("idRAII_DocInvNo").getValue(),
                 InvoiceDate = oDateFormat.format(oView.byId("idRAII_InvDate").getDateValue()),
                 // Lrdate = oDateFormat.format(oView.byId("idRAPO_LR_Date").getDateValue()),
@@ -1108,12 +1110,12 @@ sap.ui.define([
                 EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
-            if (InvoiceNo === "" || (!InvoiceDate) || Ponumber === "" || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if (InvoiceNo === "" || (!InvoiceDate) || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }
 
-            let isQuantityEntered = true;
+            let isQuantityEntered = true,isMaterialSelected=true;
             var itemData = [];
             this.getView().byId("idTable_RAII").getModel().getData().filter(item => {
                 if (item.Product === "") {
@@ -1127,8 +1129,8 @@ sap.ui.define([
                     "LineItem": item.Itemno,
                     "Material": item.Product,
                     "Materialdesc": item.ProductDescription,
-                    "Quantity": "",
-                    "Postedquantity": ""
+                    "Quantity": "0.00",
+                    "Postedquantity": "0.00"
                 };
 
 
@@ -1157,6 +1159,10 @@ sap.ui.define([
                 // "Lrdate": (Lrdate !== "" ? Lrdate : null), //"2024-12-29T00:00:00",
                 // "Lrnumber": Lrnumber,
                 "Ponumber": "",
+                "Vehicletype": VehicleType,
+                "Vehiclecapacity": VehicleCapacity,
+                "Transportelcode": TransporterCode,
+                "Zchalan": Challanno,
                 "Vendor": Vendor,
                 "Ewayno": Ewayno,
                 "EwaybillDate": EwaybillDate,
@@ -1242,7 +1248,7 @@ sap.ui.define([
             oQRCodeBox.addItem(oHtmlComp);
 
             setTimeout(function () {
-                let sQRCodeNumber = qrData.GateEntryId; // Data to encode in QR Code
+                let sQRCodeNumber = qrData.AsnNo; // Data to encode in QR Code
                 // Generate QR Code using qrcode.js
                 QRCode.toCanvas(document.getElementById('qrCanvas'), sQRCodeNumber, function (error) {
                     if (error) {
@@ -1275,8 +1281,8 @@ sap.ui.define([
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
 
-            doc.text(2, 5, `ASN Number: ${qrData.GateEntryId}`);
-            doc.text(2, 9, `Gate Entry Number: IN${qrData.GateEntryId}`);
+            doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
             doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
             doc.text(2, 17, `Inv Date: ${formattedInvDate}`);
 
@@ -1286,10 +1292,10 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendor}`);
+            doc.text(2, 21, `Vendor: ${this.vendorValue}`);
 
             // Save the PDF to a file
-            doc.save(`Gate_Entry_${qrData.GateEntryId}.pdf`);
+            doc.save(`Gate_Entry_IN${qrData.AsnNo}.pdf`);
         },
 
         clearUIFields: function () {
@@ -1297,20 +1303,28 @@ sap.ui.define([
             oView.byId("idDropdownPlant").setSelectedKey();
             oView.byId("idDropdownPlant").setValue();
             oView.byId("idRAII_InvDate").setValue();
-            oView.byId("idRAII_LR_Date").setValue();
-            oView.byId("idRAII_LR_No").setValue();
+            // oView.byId("idRAII_LR_Date").setValue();
+            // oView.byId("idRAII_LR_No").setValue();
             oView.byId("idRAII_Challan").setValue();
             oView.byId("idRAII_Vendor").setValue();
             oView.byId("idRAII_DocInvNo").setValue();
+             oView.byId("idRAII_VehicalType").setValue();
+            oView.byId("idRAII_VehicalCapacity").setValue();
+            oView.byId("idRAII_TrasporterCode").setValue();
             oView.byId("idRAII_EwayNo").setValue();
             oView.byId("idRAII_Amount").setValue();
             oView.byId("idRAII_VehicalNo").setValue();
             oView.byId("idRAII_Trasporter").setValue();
             let tModel = new sap.ui.model.json.JSONModel([]);
             oView.byId("idTable_RAII").setModel(tModel);
-
-
-            oView.byId("idPanelRAII").setVisible(false);
+            let tDate = new Date();
+            let oDateFormat = DateFormat.getInstance({
+                pattern: "yyyy-MM-dd"
+            });
+            let formattedDate = oDateFormat.format(tDate); //`${tDate.getFullYear()}/${String(tDate.getMonth() + 1).padStart(2, '0')}/${String(tDate.getDate()).padStart(2, '0')}`;
+            this.byId("idRAII_Date").setValue(formattedDate);
+            let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
+            this.byId("idRAII_Time").setValue(currentTime);
         },
 
 

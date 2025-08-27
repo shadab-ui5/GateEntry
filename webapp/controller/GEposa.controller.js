@@ -66,7 +66,16 @@ sap.ui.define([
             that.getPlantData();
             oRouter.getRoute("RouteGEWasn").attachPatternMatched(this._onRouteMatched, this);
         },
-        _onRouteMatched: function () { },
+        _onRouteMatched: function () {
+            let tDate = new Date();
+            let oDateFormat = DateFormat.getInstance({
+                pattern: "yyyy-MM-dd"
+            });
+            let formattedDate = oDateFormat.format(tDate); //`${tDate.getFullYear()}/${String(tDate.getMonth() + 1).padStart(2, '0')}/${String(tDate.getDate()).padStart(2, '0')}`;
+            this.byId("idRAPO_Date").setValue(formattedDate);
+            let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
+            this.byId("idRAPO_Time").setValue(currentTime);
+        },
         onRAPOInvoiceDateChange: function (oEvent) {
             var oDatePicker = oEvent.getSource();
             var sValue = oDatePicker.getValue();
@@ -102,7 +111,8 @@ sap.ui.define([
             var aFinalFilter = new sap.ui.model.Filter({
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
-                    new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedPOs_vendor)
+                    new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedPOs_vendor),
+                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03')
                 ],
                 and: true
             });
@@ -112,7 +122,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/asnHdr", {
+            this.f4HelpModel.read("/gateHrd", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -132,24 +142,38 @@ sap.ui.define([
 
 
         onSelectPlant: function (oEvent) {
+            this.getView().setBusy(true);
             let oValidatedComboBox = oEvent.getSource(),
                 sSelectedKey = oValidatedComboBox.getSelectedKey(),
                 sValue = oValidatedComboBox.getValue();
-            this.getView().setBusy(true);
+
             if (!sSelectedKey && sValue) {
                 oValidatedComboBox.setValueState(ValueState.Error);
                 oValidatedComboBox.setValueStateText("Invalid Value");
                 this.getView().setBusy(false);
-            } else {
-                oValidatedComboBox.setValueState(ValueState.None);
-
-                this.clearFieldsOnClearPlant();
-                this.getPurchaseOrders(sSelectedKey); //load purchase order list
-                this.getSchAggrement(sSelectedKey); //load scheduling agreement list
-                // this.getMaretial(sSelectedKey); //load material/product list
-                //this.getChallanData(sSelectedKey);
+                return;
             }
-        },
+
+            oValidatedComboBox.setValueState(ValueState.None);
+
+            this.clearFieldsOnClearPlant();
+
+            let that = this;
+            Promise.all([
+                this.getPurchaseOrders(sSelectedKey),
+                this.getSchAggrement(sSelectedKey)
+            ]).then(function () {
+                that.getView().setBusy(false);
+                // Optionally enable PO field or trigger Value Help if needed
+                // e.g., open fragment automatically or just enable the field
+                // that._openPOValueHelp(); // <-- if needed
+            }).catch(function (oError) {
+                that.getView().setBusy(false);
+                // Log or handle error if needed
+                console.error("Error loading plant data:", oError);
+            });
+        }
+        ,
 
         clearFieldsOnClearPlant: function () {
             let oView = this.getView();
@@ -189,63 +213,71 @@ sap.ui.define([
 
         getPurchaseOrders: function (sPlant) {
             let that = this;
+            that.loadedPO = false;
             that.aPurchaseOrdersData = [];
             that.aUniquePurchaseOrders = [];
 
-            let filter = new sap.ui.model.Filter({
-                path: "Plant",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: sPlant
-            });
-            this.getView().setBusy(true);
-            //this.f4HelpModel.read(`/ItemforPo?$filter=Plant eq '${sPlant}'&$top=1000`, {
-            this.f4HelpModel.read("/ItemforPo", {
-                filters: [filter],
-                urlParameters: that.oParameters,  // The top limit
-                success: function (oResponse) {
-                    that.getView().setBusy(false);
-                    that.aPurchaseOrdersData = oResponse.results;
-                    const key = 'PurchaseOrder';
-                    that.aUniquePurchaseOrders = [...new Map(oResponse.results.map(item =>
-                        [item[key], item])).values()];
-                },
-                error: function (oError) {
-                    that.getView().setBusy(false);
-                    MessageBox.error("Failed to load PO Data");
-                    console.log(oError);
-                }
-            });
+            return new Promise(function (resolve, reject) {
+                let filter = new sap.ui.model.Filter({
+                    path: "Plant",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: sPlant
+                });
 
+                that.f4HelpModel.read("/ItemforPo", {
+                    filters: [filter],
+                    urlParameters: that.oParameters,
+                    success: function (oResponse) {
+                        that.aPurchaseOrdersData = oResponse.results;
+                        const key = 'PurchaseOrder';
+                        that.aUniquePurchaseOrders = [...new Map(oResponse.results.map(item =>
+                            [item[key], item])).values()];
+                        that.loadedPO = true;
+                        resolve(); // resolve the Promise
+                    },
+                    error: function (oError) {
+                        MessageBox.error("Failed to load PO Data");
+                        console.log(oError);
+                        reject(oError); // reject the Promise
+                    }
+                });
+            });
         },
+
 
         getSchAggrement: function (sPlant) {
             let that = this;
+            that.loadedSch = false;
             that.aSchAggrementData = [];
             that.aUniqueSchAggrements = [];
 
-            let filter = new sap.ui.model.Filter({
-                path: "Plant",
-                operator: sap.ui.model.FilterOperator.EQ,
-                value1: sPlant
-            });
-            // this.f4HelpModel.read(`/ItemforSchAgr?$filter=Plant eq '${sPlant}'`, {
-            this.f4HelpModel.read("/ItemforSchAgr", {
-                filters: [filter],
-                urlParameters: that.oParameters,
-                success: function (oResponse) {
-                    that.aSchAggrementData = oResponse.results;
-                    const key = 'SchedulingAgreement';
-                    that.aUniqueSchAggrements = [...new Map(oResponse.results.map(item =>
-                        [item[key], item])).values()];
-                },
-                error: function (oError) {
-                    MessageBox.error("Failed to load Scheduling Aggrement Data");
-                    console.log(oError);
-                }
-            });
+            return new Promise(function (resolve, reject) {
+                let filter = new sap.ui.model.Filter({
+                    path: "Plant",
+                    operator: sap.ui.model.FilterOperator.EQ,
+                    value1: sPlant
+                });
 
-
+                that.f4HelpModel.read("/ItemforSchAgr", {
+                    filters: [filter],
+                    urlParameters: that.oParameters,
+                    success: function (oResponse) {
+                        that.aSchAggrementData = oResponse.results;
+                        const key = 'SchedulingAgreement';
+                        that.aUniqueSchAggrements = [...new Map(oResponse.results.map(item =>
+                            [item[key], item])).values()];
+                        that.loadedSch = true;
+                        resolve();
+                    },
+                    error: function (oError) {
+                        MessageBox.error("Failed to load Scheduling Agreement Data");
+                        console.log(oError);
+                        reject(oError);
+                    }
+                });
+            });
         },
+
 
         getVendor: function (sPlant) {
             let that = this;
@@ -321,41 +353,8 @@ sap.ui.define([
             });
         },
 
-        // POValueHelp: function (oEvent) {
-        //     let that = this;
-        //     let oInput = oEvent.getSource();
-        //     let oView = this.getView();
-        //     let sPlant = oView.byId("idDropdownPlant").getSelectedKey();
-        //     if (!sPlant) {
-        //         MessageToast.show("Select a Plant");
-        //         return;
-        //     }
 
-        //     // Open the fragment for value help
-        //     if (!this._oValueHelpDialog) {
-        //         Fragment.load({
-        //             name: "hodek.gateapps.fragments.PurchaseOrderDialog",
-        //             controller: this
-        //         }).then(function (oDialog) {
-        //             this._oValueHelpDialog = oDialog;
-        //             oView.addDependent(oDialog);
-        //             oDialog.open();
-        //         }.bind(this));
-        //     } else {
-        //         this._oValueHelpDialog.open();
-        //     }
-        //     // setTimeout(function () {
-        //         let jModel = new sap.ui.model.json.JSONModel();
-        //         sap.ui.getCore().byId("valueHelpDialog").setModel(jModel);
-        //         // Fetch data for the lists (filter1Items, filter2Items)
-        //         let aPurchaseOrderList = that.aUniquePurchaseOrders;
-        //         sap.ui.getCore().byId("valueHelpDialog").getModel().setProperty("/filter1Items", aPurchaseOrderList);
-
-        //         let aSchedulingAggreList = that.aUniqueSchAggrements;
-        //         sap.ui.getCore().byId("valueHelpDialog").getModel().setProperty("/filter2Items", aSchedulingAggreList);
-        //     // }, 400);
-        // },
-        POValueHelp: function (oEvent) {
+        _openPOValueHelp: function (oEvent) {
             let that = this;
             let oView = this.getView();
             let sPlant = oView.byId("idDropdownPlant").getSelectedKey();
@@ -364,6 +363,8 @@ sap.ui.define([
                 MessageToast.show("Select a Plant");
                 return;
             }
+
+
 
             // Open the fragment for value help
             if (!this._oValueHelpDialog) {
@@ -403,6 +404,14 @@ sap.ui.define([
                 oVHDialog.getModel().setProperty("/filter2Items", aSchedulingAggreList);
 
                 this._oValueHelpDialog.open();
+            }
+        },
+        POValueHelp: function () {
+            if (this.loadedPO && this.loadedSch) {
+                // Proceed to open the fragment
+                this._openPOValueHelp(); // Custom method to open fragment
+            } else {
+                MessageToast.show("Please wait until all data is loaded.");
             }
         },
 
@@ -682,7 +691,7 @@ sap.ui.define([
             //let oModel = new sap.ui.model.json.JSONModel(tableData);
             //this.getView().byId("idTable_RAPO").setModel(oModel);
 
-            this.calculateMaxAmoutValue_RAPO()
+            // this.calculateMaxAmoutValue_RAPO()
         },
 
         createGroupingForMaterialPOData: function (selectedKey, selectedPurchaseOrder, aSelectedPoMaterialItems) {
@@ -766,14 +775,14 @@ sap.ui.define([
                 oInput.setValue();
                 binding.AvailableQuantity = ""; //update entered Qty into available Quantity field
                 //reset Amount field value state for RAPO
-                let amountInput = this.getView().byId("idRAPO_Amount");
-                amountInput.setValueState(sap.ui.core.ValueState.None);
+                // let amountInput = this.getView().byId("idRAPO_Amount");
+                // amountInput.setValueState(sap.ui.core.ValueState.None);
             } else {
                 binding.EnteredQuantity = value;
                 binding.AvailableQuantity = value; //update entered Qty into available Quantity field
                 // Valid input, clear error state
                 oInput.setValueState(sap.ui.core.ValueState.None);
-                this.calculateMaxAmoutValue_RAPO(value);
+                // this.calculateMaxAmoutValue_RAPO(value);
             }
         },
 
@@ -1321,7 +1330,7 @@ sap.ui.define([
                             text: 'Download Gate Entry',
                             press: function () {
                                 that.onViewQR(qrData); //call function to download QR code
-                                that.clearUIFields();
+
                                 dialog.close();
                             }
                         }),
@@ -1335,7 +1344,6 @@ sap.ui.define([
                         if (oEvent.key === "Escape") {
                             //oEvent.preventDefault();
                             that.onViewQR(qrDataToPrintQRCode); //call function to download QR code
-                            that.clearUIFields();
                             dialog.close();
                         }
                     });
@@ -1374,7 +1382,7 @@ sap.ui.define([
             oQRCodeBox.addItem(oHtmlComp);
 
             setTimeout(function () {
-                let sQRCodeNumber = qrData.GateEntryId; // Data to encode in QR Code
+                let sQRCodeNumber = qrData.AsnNo; // Data to encode in QR Code
                 // Generate QR Code using qrcode.js
                 QRCode.toCanvas(document.getElementById('qrCanvas'), sQRCodeNumber, function (error) {
                     if (error) {
@@ -1386,7 +1394,8 @@ sap.ui.define([
                     that._generatePDF(qrData);
                     oQRCodeBox.setVisible(false);
                 }.bind(this));
-            }, 200);
+            }, 10);
+            that.clearUIFields();
         },
 
         _generatePDF: function (qrData) {
@@ -1407,8 +1416,8 @@ sap.ui.define([
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
 
-            doc.text(2, 5, `ASN Number: ${qrData.GateEntryId}`);
-            doc.text(2, 9, `Gate Entry Number: IN${qrData.GateEntryId}`);
+            doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
             doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
             doc.text(2, 17, `Inv Date: ${formattedInvDate}`);
 
@@ -1421,7 +1430,7 @@ sap.ui.define([
             doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendor}`);
 
             // Save the PDF to a file
-            doc.save(`Gate_Entry_${qrData.GateEntryId}.pdf`);
+            doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },
 
         clearUIFields: function () {
@@ -1431,43 +1440,25 @@ sap.ui.define([
             oView.byId("idDropdownPlant").setValue();
             oView.byId("idRAPO_Date").setValue();
             oView.byId("idRAPO_Time").setValue();
-            let sInwardtype = oView.byId("idDropdownInwardType").getSelectedKey();
-            if (sInwardtype === "ReceiptAgainstPO") {
-                oView.byId("idDocInvNo").setValue();
-                oView.byId("idDropdownInwardType").setSelectedKey();
-                oView.byId("idDropdownInwardType").setValue();
-
-                oView.byId("idRAPO_InvDate").setValue();
-                oView.byId("idRAPO_LR_Date").setValue();
-                oView.byId("idRAPO_LR_No").setValue();
-                oView.byId("idRAPO_PO_Order").setValue();
-                oView.byId("idRAPO_EwayNo").setValue();
-                oView.byId("idRAPO_Amount").setValue();
-                oView.byId("idRAPO_VehicalNo").setValue();
-                oView.byId("idRAPO_Trasporter").setValue();
-                let tModel = new sap.ui.model.json.JSONModel([]);
-                oView.byId("idTable_RAPO").setModel(tModel);
-            }
-            else if (sInwardtype === "ReceiptAsItIs") {
-                oView.byId("idDropdownInwardType").setSelectedKey();
-                oView.byId("idDropdownInwardType").setValue();
-                //oView.byId("idRAII_Date").setValue();
-                //oView.byId("idRAII_Time").setValue();
-                oView.byId("idRAII_InvDate").setValue();
-                oView.byId("idRAII_LR_Date").setValue();
-                oView.byId("idRAII_LR_No").setValue();
-                oView.byId("idRAII_Challan").setValue();
-                oView.byId("idRAII_Vendor").setValue();
-                oView.byId("idRAII_DocInvNo").setValue();
-                oView.byId("idRAII_EwayNo").setValue();
-                oView.byId("idRAII_Amount").setValue();
-                oView.byId("idRAII_VehicalNo").setValue();
-                oView.byId("idRAII_Trasporter").setValue();
-                let tModel = new sap.ui.model.json.JSONModel([]);
-                oView.byId("idTable_RAII").setModel(tModel);
-            }
-            oView.byId("idPanelRAPO").setVisible(false);
-            oView.byId("idPanelRAII").setVisible(false);
+            oView.byId("idDocInvNo").setValue();
+            oView.byId("idRAPO_InvDate").setValue();
+            oView.byId("idRAPO_LR_Date").setValue();
+            oView.byId("idRAPO_LR_No").setValue();
+            oView.byId("idRAPO_PO_Order").setValue();
+            oView.byId("idRAPO_EwayNo").setValue();
+            oView.byId("idRAPO_Amount").setValue();
+            oView.byId("idRAPO_VehicalNo").setValue();
+            oView.byId("idRAPO_Trasporter").setValue();
+            let tModel = new sap.ui.model.json.JSONModel([]);
+            oView.byId("idTable_RAPO").setModel(tModel);
+            let tDate = new Date();
+            let oDateFormat = DateFormat.getInstance({
+                pattern: "yyyy-MM-dd"
+            });
+            let formattedDate = oDateFormat.format(tDate); //`${tDate.getFullYear()}/${String(tDate.getMonth() + 1).padStart(2, '0')}/${String(tDate.getDate()).padStart(2, '0')}`;
+            this.byId("idRAPO_Date").setValue(formattedDate);
+            let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
+            this.byId("idRAPO_Time").setValue(currentTime);
             //oView.byId("idPanelChallan").setVisible(false);
         },
 

@@ -104,7 +104,7 @@ sap.ui.define([
                     // aFilters.push(oOrFilter);
 
 
-                    oModel.read("/asnHdr", {
+                    oModel.read("/gateHrd", {
                         filters: aFilters,
                         urlParameters: {
                             "$top": iTop,
@@ -137,7 +137,7 @@ sap.ui.define([
 
                 oModel.update(sPath, oPayload, {
                     success: function () {
-                        sap.m.MessageToast.show(`Status updated to 02 for ASN: ${sAsnNo}`);
+                        sap.m.MessageToast.show(`Gate Entry cancelled Successfully for ASN: ${sAsnNo}`);
 
                         _this.iSkip = 0;
                         _this.iTop = 20; // page size
@@ -196,7 +196,7 @@ sap.ui.define([
 
                 oModel.update(sPath, oPayload, {
                     success: function () {
-                        MessageToast.show("Gate Entry ID updated successfully.");
+                        // MessageToast.show("Gate Entry ID updated successfully.");
                     },
                     error: function (oError) {
                         console.error("Failed to update Gate Entry ID:", oError);
