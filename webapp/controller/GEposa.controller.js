@@ -447,6 +447,7 @@ sap.ui.define([
                 this.selected_Po_Scheduling_Type = "PurchaseOrder";
                 this.selected_Po_Scheduling_Value = selectedItem.PurchaseOrder;
                 this.selectedPOSchAggrVendor = selectedItem.Supplier; //get the selected PO vendor
+                this.selectedPOSchAggrVendorName = selectedItem.SupplierName; //get the selected PO vendor
             }
             else if (selectedItem.SchedulingAgreement) {
                 selectedValue = selectedItem.SchedulingAgreement;
@@ -454,6 +455,7 @@ sap.ui.define([
                 this.selected_Po_Scheduling_Type = "SchedulingAgreement";
                 this.selected_Po_Scheduling_Value = selectedItem.SchedulingAgreement;
                 this.selectedPOSchAggrVendor = selectedItem.Supplier; // get the selected scheduling Aggrement vendor
+                this.selectedPOSchAggrVendorName = selectedItem.SupplierName; // get the selected scheduling Aggrement vendor
             }
             // Set the selected value in the input field
             var oInput = this.byId("idRAPO_PO_Order");
@@ -1427,7 +1429,7 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendor}`);
+            doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`);
 
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
