@@ -1152,6 +1152,7 @@ sap.ui.define([
                 "GateEntryId": "",
                 "InvoiceNo": InvoiceNo,
                 "Plant": Plant,
+                "Inwardtype":"RECASIS",
                 "Fiscalyear": Fiscalyear,
                 "SystemDate": SystemDate,
                 "SystemTime": SystemTime,

@@ -10,25 +10,30 @@
         <fb:FilterBar id="filterbar" useToolbar="false" search=".onFilterGo" filterChange=".onFilterChange" afterVariantLoad=".onAfterVariantLoad">
             <fb:filterGroupItems>
                 <!-- 🔍 Search Field -->
-                <fb:FilterGroupItem id="_IDGenFilterGroupItem11"  name="Search" label="Search" groupName="Group1" visibleInFilterBar="true">
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem11" name="Search" label="Search" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
-                        <SearchField id="searchField" width="90%" class="" placeholder="Search..."  search=".onAsnSearch" />
+                        <SearchField id="searchField" width="90%" class="" placeholder="Search..." search=".onAsnSearch" />
                     </fb:control>
                 </fb:FilterGroupItem>
                 <fb:FilterGroupItem id="_IDGenFilterGroupItem15" name="asn" label="ASN No" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
-                        <Input id="asnField" width="90%" class="" placeholder="ASN..."  />
+                        <Input id="asnField" width="90%" class="" placeholder="ASN..." />
+                    </fb:control>
+                </fb:FilterGroupItem>
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem" name="ge" label="Gate Entry No" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <Input id="geField" width="90%" class="" placeholder="Gate Entry..." />
                     </fb:control>
                 </fb:FilterGroupItem>
                 <fb:FilterGroupItem id="_IDGenFilterGroupItem16" name="invoice" label="Invoice No" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
-                        <Input id="invoiceField" width="90%" class="" placeholder="Invoice..."  />
+                        <Input id="invoiceField" width="90%" class="" placeholder="Invoice..." />
                     </fb:control>
                 </fb:FilterGroupItem>
                 <fb:FilterGroupItem id="_IDGenFilterGroupItem17" name="invoiceDate" label="Invoice Date" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
-                            <DateRangeSelection id="idprintPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
-                        </fb:control>
+                        <DateRangeSelection id="idprintPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                    </fb:control>
                 </fb:FilterGroupItem>
             </fb:filterGroupItems>
 
@@ -36,9 +41,9 @@
         <Table id="idAsnTable" alternateRowColors="true" growing="true" mode="SingleSelectLeft" multiSelectMode="ClearAll" growingScrollToLoad="true" growingThreshold="20" updateStarted="onUpdateStartPoHeaderTable" items="{AsnHeaderModel>/AsnData}" itemPress="onLineItemPress" selectionChange="onSelectionChange" sticky="ColumnHeaders,HeaderToolbar">
             <headerToolbar>
                 <OverflowToolbar id="_IDGenOverflowToolbar1">
-                    <Title id="_IDGenTitle3" text="ASN Reprint Table" level="H2"/>
+                    <Title id="_IDGenTitle3" text="Gate Entry Details" level="H2"/>
                     <ToolbarSpacer id="_IDGenToolbarSpacer"/>
-                    <Button id="idActionReprint" tooltip="Reprint" text="Re-print" icon="sap-icon://print" press="handleReprint" enabled="false"/>
+                    <Button id="idActionReprint" tooltip="Reprint" type="Emphasized" text="Re-print" icon="sap-icon://print" press="handleReprint" enabled="false"/>
                 </OverflowToolbar>
             </headerToolbar>
             <infoToolbar>
@@ -47,8 +52,11 @@
                 </OverflowToolbar>
             </infoToolbar>
             <columns>
-                <Column id="purOrder" headerMenu="columnHeaderMenu" >
+                <Column id="purOrder" headerMenu="columnHeaderMenu">
                     <Text id="_IDGenText" text="ASN No." />
+                </Column>
+                <Column id="gateEntry" headerMenu="columnHeaderMenu">
+                    <Text id="_IDGenText7" text="Gate Entry No." />
                 </Column>
                 <Column id="_IDGenColumn" minScreenWidth="Tablet" demandPopin="true">
                     <Text id="_IDGenText2" text="Invoice Number" />
@@ -56,11 +64,11 @@
                 <Column id="_IDGenColumn1" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
                     <Text id="_IDGenText3" text="Invoice Date" />
                 </Column>
-                
+
                 <Column id="_IDGenColumn32" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
                     <Text id="_IDGenText122" text="Plant" />
                 </Column>
-                <Column id="_IDGenColumn22" minScreenWidth="Tablet" demandPopin="true" hAlign="Center" >
+                <Column id="_IDGenColumn22" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
                     <Text id="_IDGenText42" text="Amount" />
                 </Column>
                 <Column id="_IDGenColumnn32" minScreenWidth="Tablet" demandPopin="true" hAlign="Center">
@@ -75,22 +83,22 @@
                 <ColumnListItem id="_IDGenColumnListItem12" vAlign="Middle">
                     <cells>
                         <Text id="_IDGenText51" text="{AsnHeaderModel>AsnNo}" />
-
+                        <Text id="_IDGenText6" text="{AsnHeaderModel>GateEntryId}" />
                         <Text id="_IDGenText81" text="{AsnHeaderModel>InvoiceNo}" />
                         <Text id="_IDGenText922" text="{path:'AsnHeaderModel>InvoiceDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
-                        <Text id="_IDGenText75"  text="{AsnHeaderModel>PlantName}({AsnHeaderModel>Plant})" />
-                        <Text id="_IDGenText76"  text="{AsnHeaderModel>Amount} {AsnHeaderModel>DocumentCurrency}" />
+                        <Text id="_IDGenText75" text="{AsnHeaderModel>PlantName}({AsnHeaderModel>Plant})" />
+                        <Text id="_IDGenText76" text="{AsnHeaderModel>Amount} {AsnHeaderModel>DocumentCurrency}" />
                         <Text id="_IDGenText923" text="{path:'AsnHeaderModel>SystemDate',formatter:'.formatter.formatDateToDDMMYYYY'}" />
                         <Text id="_IDGenText91" text="{path:'AsnHeaderModel>SystemTime',formatter:'.formatter.formatHours'}" />
-                       
+
                     </cells>
                 </ColumnListItem>
             </items>
         </Table>
         <VBox id="idVBox_QRCode" visible="false">
-            
+
         </VBox>
     </Page>
-    
+
 
 </mvc:View>

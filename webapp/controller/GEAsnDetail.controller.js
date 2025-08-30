@@ -92,11 +92,12 @@ sap.ui.define([
                         return; // Exit if user cancels
                     }
                     that.getView().setBusy(true);
-
+                    let gateEntryNo=`IN${that.sAsn}`
                     // Prepare the update payload
                     const payload = {
-                        GateEntryId: `IN${that.sAsn}`, // Replace with your actual value,
-                        Status: '03'
+                        GateEntryId:gateEntryNo, // Replace with your actual value,
+                        Status: '03',
+                        Inwardtype:'RECPO'
                     };
                     const sPath = `/InwardGateHeader('${that.sAsn}')`;
 
