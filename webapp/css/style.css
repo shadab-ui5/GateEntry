@@ -1,7 +1,8 @@
 /* Enter your custom styles here */
 /* Full page background image */
 .fullPageBackground {
-    background-image: url("../resource/bg.jpg"); /* Replace with your image */
+    background-image: url("../resource/bg.jpg");
+    /* Replace with your image */
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -10,19 +11,24 @@
 
 .formContainer {
     gap: 10px;
-    background: rgba(255, 255, 255, 0.15); /* semi-transparent */
-    backdrop-filter: blur(10px);           /* glass blur */
-    -webkit-backdrop-filter: blur(10px);   /* Safari support */
+    background: rgba(255, 255, 255, 0.15);
+    /* semi-transparent */
+    backdrop-filter: blur(10px);
+    /* glass blur */
+    -webkit-backdrop-filter: blur(10px);
+    /* Safari support */
     border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 10px;
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     padding: 20px;
 }
+
 .formLabel {
     color: white;
     font-size: 1rem;
     font-weight: 500;
 }
+
 .formButton {
     width: 200px;
     height: 3rem;
@@ -31,16 +37,81 @@
     border-radius: 8px;
 }
 
-.ICTBCustom > .sapMITH {
-    background-color: aliceblue !important;
+.ICTBCustom>.sapMITH {
+    background: linear-gradient(90deg, #0057d2 0%, rgba(0, 87, 210, 0.5) 75%, #0057d2 100%), lightgray url(../images/GlobalActionBar.jpg) 0% 0% repeat;
+    background-size: cover;
+    color: white;
 }
 
 .ICTBCustom .sapMITBText {
     font-size: 1.1rem !important;
+    font-weight: 600;
+    color: whitesmoke !important;
+    /* smokewhite */
+}
+
+/* Selected tab text */
+.ICTBCustom .sapMITBFilter.sapMITBSelected .sapMITBText {
+    color: #ffffff !important;
+    /* pure white */
+    font-weight: 600;
+    /* stronger emphasis */
+}
+
+.ICTBCustom .sapMITBSelected .sapMITBContentArrow::after {
+    background: white !important;
 }
 
 /* Increase Page Title font size */
 .MainPage .sapMTitle {
-    font-size: 1.2rem !important;   /* adjust as needed */
-    font-weight: 600;               /* optional: make it bolder */
+    font-size: 1.2rem !important;
+    /* adjust as needed */
+    font-weight: 600;
+    /* optional: make it bolder */
+}
+
+.formButton .sapMBtnInner {
+    height: 2rem;
+    min-width: 10rem;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+.searchDesign .sapMSFF {
+    height: 2.5rem !important;
+    /* taller input */
+    padding-left: 1rem !important;
+    /* proper left padding */
+    font-size: 1.2rem !important;
+    /* optional: make text slightly bigger */
+    border-radius: 10px;
+    border: none !important;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    /* smoother edges */
+}
+
+.searchDesign .sapMSFB {
+    line-height: 2.25rem !important;
+    font-size: 1.2rem;
+    margin-right: 0.5rem;
+}
+
+.searchDesign .sapMSFI[type='search'] {
+    font-size: 1.2rem !important;
+}
+.filterbarTabAsn .sapMITBText {
+
+    color: rgb(0, 0, 0) !important;
+    /* smokewhite */
+}
+
+/* Selected tab text */
+.filterbarTabAsn .sapMITBFilter.sapMITBSelected .sapMITBText {
+    color: rgb(3, 100, 197) !important;
+    /* pure white */
+    /* stronger emphasis */
+}
+
+.filterbarTabAsn .sapMITBSelected .sapMITBContentArrow::after {
+    background: rgb(3, 100, 197) !important;
 }

@@ -9,16 +9,16 @@
     xmlns:svm="sap.ui.comp.smartvariants">
     <Page id="asnCreationpage" title="{i18n>title}" class="fullPageBackground" showFooter="true" titleAlignment="Auto" showNavButton="true" showHeader="false" navButtonPress="onNavBack">
         <HBox width="100%" justifyContent="Center" alignItems="Center" height="90%">
-            <VBox class="formContainer" justifyContent="Start" alignItems="Center" width="32rem" height="10rem">
+            <VBox class="formContainer" justifyContent="Center" alignItems="Center" width="25rem" height="15rem">
 
                 <!-- Label -->
                 <Label text="Enter ASN Number:" design="Bold" labelFor="idAsnInput" class="formLabel" width="100%"/>
 
                 <!-- Input -->
-                <SearchField id="idAsnInput" value=""  maxLength="10" placeholder="Scan or Type ASN.." search="onSubmitPress" width="350px" liveChange="onAsnLiveChange"/>
+                <SearchField id="idAsnInput" value="" class="searchDesign" width="20rem" maxLength="10" placeholder="Scan or Type ASN.." search="onSubmitPress"  liveChange="onAsnLiveChange"/>
 
                 <!-- Submit Button -->
-                <Button text="Search" type="Emphasized" press="onSubmitPress" class="formButton"/>
+                <Button text="Search" type="Emphasized" press="onSubmitPress" class="formButton sapUiMediumMarginTop"/>
 
             </VBox>
         </HBox>

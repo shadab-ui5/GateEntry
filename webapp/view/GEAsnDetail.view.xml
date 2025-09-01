@@ -101,7 +101,7 @@
         </f:header>
         <f:content >
 
-            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding">
+            <IconTabBar id="iconTabBar" class="sapUiNoContentPadding filterbarTabAsn">
                 <items>
                     <IconTabFilter id="_IDGenIconTabFilter3" text="Items">
                         <VBox id="_IDGenVBox14">

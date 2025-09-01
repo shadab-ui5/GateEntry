@@ -1290,7 +1290,7 @@ sap.ui.define([
 
             let payload = {
                 "AsnNo": "",
-                "Inwardtype":"RECPO",
+                "Inwardtype": "RECPO",
                 "GateEntryId": "",
                 "InvoiceNo": InvoiceNo,
                 "Plant": Plant,
@@ -1746,7 +1746,18 @@ sap.ui.define([
                 }
             });
         },
-
+        onDeleteReceiptAsPoItem: function (oEvent) {
+            let that = this;
+            let RAIITable = this.getView().byId("idTable_RAPO");
+            let RAIITableData = RAIITable.getModel().getData();
+            let sPath = oEvent.getSource().getBindingContext().getPath(); //.split("/")[1];
+            let iIndex = parseInt(sPath.substring(sPath.lastIndexOf("/") + 1), 10);
+            RAIITableData.splice(iIndex, 1);
+            RAIITable.getModel().refresh();
+            setTimeout(function () {
+                that.calculateMaxAmoutValue_RAPO();
+            }, 200);
+        },
 
 
     });

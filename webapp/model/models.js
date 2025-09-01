@@ -6,7 +6,7 @@ sap.ui.define([
     "sap/m/MessageToast",
     "sap/m/MessageBox"
 ],
-    function (JSONModel, Device, Formatter, DateFormat,MessageToast,MessageBox) {
+    function (JSONModel, Device, Formatter, DateFormat, MessageToast, MessageBox) {
         "use strict";
 
         return {
@@ -158,32 +158,29 @@ sap.ui.define([
                 });
             },
             fetchInwardGateHeaderAndItems: function (_this, asnNo) {
-                const oModel = _this.getOwnerComponent().getModel("vendorModel"); // Replace with your model name
-                const sPath = `/InwardGateHeader('${asnNo}')`;
+                return new Promise((resolve, reject) => {
+                    const oModel = _this.getOwnerComponent().getModel("vendorModel");
+                    const sPath = `/InwardGateHeader('${asnNo}')`;
 
-                oModel.read(sPath, {
-                    urlParameters: {
-                        "$expand": "to_Item" // Fetch header + related items
-                    },
-                    success: function (oData) {
-                        console.log("Header and Items:", oData);
+                    oModel.read(sPath, {
+                        urlParameters: { "$expand": "to_Item" },
+                        success: function (oData) {
+                            console.log("Header and Items:", oData);
 
-                        // Header data
-                        const headerData = oData;
+                            // Set models for the view
+                            const headerData = oData;
+                            const itemsData = oData.to_Item.results;
 
-                        // Items data (array)
-                        const itemsData = oData.to_Item.results;
+                            const oView = _this.getView();
+                            oView.getModel("AsnHeaderModel").setData(headerData);
+                            oView.getModel("AsnItemsModel").setData(itemsData);
 
-                        // You can now set it to models for your view
-                        const oView = _this.getView();
-                        oView.getModel('AsnHeaderModel').setData(headerData);
-                        oView.getModel('AsnItemsModel').setData(itemsData);
-                        _this.getView().setBusy(false);
-                    }.bind(_this),
-                    error: function (oError) {
-                        console.error("Failed to fetch InwardGateHeader:", oError);
-                        _this.getView().setBusy(false);
-                    }
+                            resolve(headerData); // ✅ return header data to caller
+                        },
+                        error: function (oError) {
+                            reject(oError);
+                        }
+                    });
                 });
             },
             updateGateEntryId: function (_this, asnNo, newGateEntryId) {
@@ -195,7 +192,7 @@ sap.ui.define([
                 // Only sending the field to update
                 const oPayload = {
                     GateEntryId: newGateEntryId,
-                    Status:'03'
+                    Status: '03'
                 };
 
                 oModel.update(sPath, oPayload, {
@@ -208,7 +205,7 @@ sap.ui.define([
                     }
                 });
             },
-            
+
             _loadPlants: function (_this, sQuery, iSkip, iTop, fnCallback) {
                 let oModel = _this.getOwnerComponent().getModel("vendorModel");
 

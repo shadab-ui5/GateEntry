@@ -1149,6 +1149,7 @@ sap.ui.define([
 
             let payload = {
                 "AsnNo": "",
+                "Inwardtype": "STO",
                 "GateEntryId": "",
                 "InvoiceNo": InvoiceNo,
                 "Plant": Plant,
@@ -1325,6 +1326,18 @@ sap.ui.define([
             this.byId("idRAII_Date").setValue(formattedDate);
             let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
             this.byId("idRAII_Time").setValue(currentTime);
+        },
+        onDeleteReceiptAsPoItem: function (oEvent) {
+            let that = this;
+            let RAIITable = this.getView().byId("idTable_RAII");
+            let RAIITableData = RAIITable.getModel().getData();
+            let sPath = oEvent.getSource().getBindingContext().getPath(); //.split("/")[1];
+            let iIndex = parseInt(sPath.substring(sPath.lastIndexOf("/") + 1), 10);
+            RAIITableData.splice(iIndex, 1);
+            RAIITable.getModel().refresh();
+            setTimeout(function () {
+                that.calculateMaxAmoutValue_RAPO();
+            }, 200);
         },
 
 

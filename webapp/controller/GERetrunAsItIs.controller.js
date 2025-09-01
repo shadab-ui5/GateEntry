@@ -844,7 +844,7 @@ sap.ui.define([
                                 return oContext.getObject();
                             });
                             selectedInput.setValue(selectedValue[0].Supplier);
-                            that.vendorValue=`${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
+                            that.vendorValue = `${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
                             that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
                     },
@@ -1115,7 +1115,7 @@ sap.ui.define([
                 return;
             }
 
-            let isQuantityEntered = true,isMaterialSelected=true;
+            let isQuantityEntered = true, isMaterialSelected = true;
             var itemData = [];
             this.getView().byId("idTable_RAII").getModel().getData().filter(item => {
                 if (item.Product === "") {
@@ -1152,7 +1152,7 @@ sap.ui.define([
                 "GateEntryId": "",
                 "InvoiceNo": InvoiceNo,
                 "Plant": Plant,
-                "Inwardtype":"RECASIS",
+                "Inwardtype": "RECASIS",
                 "Fiscalyear": Fiscalyear,
                 "SystemDate": SystemDate,
                 "SystemTime": SystemTime,
@@ -1309,7 +1309,7 @@ sap.ui.define([
             oView.byId("idRAII_Challan").setValue();
             oView.byId("idRAII_Vendor").setValue();
             oView.byId("idRAII_DocInvNo").setValue();
-             oView.byId("idRAII_VehicalType").setValue();
+            oView.byId("idRAII_VehicalType").setValue();
             oView.byId("idRAII_VehicalCapacity").setValue();
             oView.byId("idRAII_TrasporterCode").setValue();
             oView.byId("idRAII_EwayNo").setValue();
@@ -1328,7 +1328,18 @@ sap.ui.define([
             this.byId("idRAII_Time").setValue(currentTime);
         },
 
-
+        onDeleteReceiptAsPoItem: function (oEvent) {
+            let that = this;
+            let RAIITable = this.getView().byId("idTable_RAII");
+            let RAIITableData = RAIITable.getModel().getData();
+            let sPath = oEvent.getSource().getBindingContext().getPath(); //.split("/")[1];
+            let iIndex = parseInt(sPath.substring(sPath.lastIndexOf("/") + 1), 10);
+            RAIITableData.splice(iIndex, 1);
+            RAIITable.getModel().refresh();
+            setTimeout(function () {
+                that.calculateMaxAmoutValue_RAPO();
+            }, 200);
+        },
 
 
 

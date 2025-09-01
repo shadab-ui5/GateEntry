@@ -26,10 +26,6 @@ sap.ui.define([
             let that = this;
             this.sAsn = "";
             this.selectedPOSchAggrVendor = "";
-            const oModel = new sap.ui.model.json.JSONModel([]);
-            const oModelHeader = new sap.ui.model.json.JSONModel([]);
-            this.getView().setModel(oModel, "AsnItemsModel");
-            this.getView().setModel(oModelHeader, "AsnHeaderModel");
             this.f4HelpModel = this.getOwnerComponent().getModel("vendorModel");
             this.inGateEntryModel = this.getOwnerComponent().getModel("vendorModel");
             oRouter.getRoute("RouteGEAsnDetail").attachPatternMatched(this._onRouteMatched, this);
@@ -38,23 +34,20 @@ sap.ui.define([
         formatter: Formatter,
         _onRouteMatched: function (oEvent) {
             this.getView().setBusy(true);
-            this.getView().getModel("AsnItemsModel").setProperty("/Results", []);
-            this.getView().getModel("AsnHeaderModel").setProperty("/Results", []);
-            this.getView().getModel("AsnItemsModel").refresh();
-            this.getView().getModel("AsnHeaderModel").refresh();
+            var oAsnItemsModel = this.getOwnerComponent().getModel("AsnItemsModel");
+            var oAsnHeaderModel = this.getOwnerComponent().getModel("AsnHeaderModel");
 
+            // set models at view level
+            this.getView().setModel(oAsnItemsModel, "AsnItemsModel");
+            this.getView().setModel(oAsnHeaderModel, "AsnHeaderModel");
+            
             let currentAsn = oEvent.getParameter("arguments").asn;
-            if (!currentAsn) {
+            if (!oAsnItemsModel && !oAsnHeaderModel) {
                 this.getView().setBusy(false);
                 this.onNavBack();
                 return;
             }
-            if (this.sAsn !== currentAsn) {
-                this.sAsn = currentAsn;
-                Models.fetchInwardGateHeaderAndItems(this, this.sAsn);
-            }else{
-                this.getView().setBusy(false);
-            }
+            this.getView().setBusy(false);
         },
         onNavBack: function () {
             var oHistory = sap.ui.core.routing.History.getInstance();
@@ -92,12 +85,12 @@ sap.ui.define([
                         return; // Exit if user cancels
                     }
                     that.getView().setBusy(true);
-                    let gateEntryNo=`IN${that.sAsn}`
+                    let gateEntryNo = `IN${that.sAsn}`
                     // Prepare the update payload
                     const payload = {
-                        GateEntryId:gateEntryNo, // Replace with your actual value,
+                        GateEntryId: gateEntryNo, // Replace with your actual value,
                         Status: '03',
-                        Inwardtype:'RECPO'
+                        Inwardtype: 'RECPO'
                     };
                     const sPath = `/InwardGateHeader('${that.sAsn}')`;
 

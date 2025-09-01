@@ -87,7 +87,7 @@ sap.ui.define([
                     // oAsnModel.setProperty("/AsnData", aExisting.concat(aResults));
 
                     // Update skip for next load
-                    // _this.iSkip += aResults.length;
+                    _this.iSkip += aResults.length;
                     _this.oBusyDialog.close();
                 })
                 .catch(function () {

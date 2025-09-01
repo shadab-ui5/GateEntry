@@ -48,6 +48,10 @@ sap.ui.define([
                 }
                 that.calculateMaxAmoutValue_RAPO(itemQuantity);
             });*/
+            const oModel = new sap.ui.model.json.JSONModel([]);
+            const oModelHeader = new sap.ui.model.json.JSONModel([]);
+            this.getOwnerComponent().setModel(oModel, "AsnItemsModel");
+            this.getOwnerComponent().setModel(oModelHeader, "AsnHeaderModel");
             oRouter.getRoute("RouteGEAsn").attachPatternMatched(this._onRouteMatched, this);
 
         },
@@ -59,8 +63,29 @@ sap.ui.define([
             }
         },
         callDetailScreen: function (asn) {
-            const oRouter = this.getOwnerComponent().getRouter();
-            oRouter.navTo("RouteGEAsnDetail", { asn: asn });
+            if (asn) {
+                this.getView().setBusy(true);
+
+                Models.fetchInwardGateHeaderAndItems(this, asn)
+                    .then((headerData) => {
+                        // ✅ Only navigate if Status === "01"
+                        if (headerData.Status === "01") {
+                            const oRouter = this.getOwnerComponent().getRouter();
+                            oRouter.navTo("RouteGEAsnDetail", { asn: asn });
+                        } else if (headerData.Status === "02") {
+                            sap.m.MessageToast.show(`This ASN ${asn} is cancelled`);
+                        } else {
+                            sap.m.MessageToast.show("Gate Entry Already Created");
+                        }
+                    })
+                    .catch((err) => {
+                        console.error("Error fetching ASN:", err);
+                        sap.m.MessageToast.show("Failed to fetch ASN details");
+                    })
+                    .finally(() => {
+                        this.getView().setBusy(false);
+                    });
+            }
         },
         onNavBack: function () {
             var oHistory = sap.ui.core.routing.History.getInstance();
@@ -99,7 +124,7 @@ sap.ui.define([
                 console.log("10-digit ASN entered:", sValue);
 
                 this.callDetailScreen(sValue);
-            }else{
+            } else {
                 sap.m.MessageToast.show("Enter 10 digit ASN Number")
             }
         }
