@@ -1,7 +1,7 @@
 /* Enter your custom styles here */
 /* Full page background image */
 .fullPageBackground {
-    background-image: url("../resource/bg.jpg");
+    background-image: url("../resource/ge.png");
     /* Replace with your image */
     background-size: cover;
     background-position: center;
@@ -24,7 +24,7 @@
 }
 
 .formLabel {
-    color: white;
+    color: rgb(0, 0, 0);
     font-size: 1rem;
     font-weight: 500;
 }

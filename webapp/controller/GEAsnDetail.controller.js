@@ -42,6 +42,7 @@ sap.ui.define([
             this.getView().setModel(oAsnHeaderModel, "AsnHeaderModel");
             
             let currentAsn = oEvent.getParameter("arguments").asn;
+            this.sAsn=currentAsn;
             if (!oAsnItemsModel && !oAsnHeaderModel) {
                 this.getView().setBusy(false);
                 this.onNavBack();
