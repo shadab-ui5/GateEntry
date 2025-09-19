@@ -1300,7 +1300,10 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Vendor: ${this.vendorValue}`);
+            // doc.text(2, 21, `Vendor: ${this.vendorValue}`);
+            let vendorText = `Vendor: ${this.vendorValue}`;
+            let wrappedVendor = doc.splitTextToSize(vendorText, 40);
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
 
             // Save the PDF to a file
             doc.save(`Gate_Entry_IN${qrData.AsnNo}.pdf`);

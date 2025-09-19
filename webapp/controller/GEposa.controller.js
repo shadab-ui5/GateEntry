@@ -1268,7 +1268,7 @@ sap.ui.define([
                         "Materialdesc": item.PurchasingDocumentItemText,
                         "Quantity": parseFloat(item.TargetQuantity).toFixed(2),
                         "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
-                        "Uom":item.OrderQuantityUnit
+                        "Uom": item.OrderQuantityUnit
                     };
                 } else {
                     obj = {
@@ -1278,7 +1278,7 @@ sap.ui.define([
                         "Materialdesc": item.PurchaseOrderItemText,
                         "Quantity": parseFloat(item.Quantity).toFixed(2),
                         "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
-                        "Uom":item.BaseUnit
+                        "Uom": item.BaseUnit
                     };
                 }
 
@@ -1311,7 +1311,7 @@ sap.ui.define([
                 "Vehicleno": Vehicleno,
                 "Transporter": Transporter,
                 "Status": "01",
-                "Vendorname":this.selectedPOSchAggrVendorName,
+                "Vendorname": this.selectedPOSchAggrVendorName,
                 "to_Item": itemData
             };
 
@@ -1434,8 +1434,10 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`);
-
+            // doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`);
+            let vendorText = `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`;
+            let wrappedVendor = doc.splitTextToSize(vendorText, 40);
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },
