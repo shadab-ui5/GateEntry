@@ -94,6 +94,10 @@
                             <Label id="_IDGenLabel111" text="Supplier"/>
                             <Text id="idSupplier" text="{AsnHeaderModel>/Vendor}" class="sapUiSmallMarginBottom"/>
                         </VBox>
+                        <VBox id="_IDGenVBox114" width="20%" visible="false">
+                            <Label id="_IDGenLabel114" text="Supplier"/>
+                            <Text id="idSupplierName" text="{AsnHeaderModel>/Vendorname}" class="sapUiSmallMarginBottom"/>
+                        </VBox>
                     </HBox>
 
                 </f:content>

@@ -35,7 +35,6 @@ sap.ui.define([
                         ],
                         success: function (oData) {
                             console.log("Fetched supplier list:", oData.results);
-
                             resolve(oData);
                         },
                         error: function (oError) {
@@ -288,32 +287,34 @@ sap.ui.define([
                 });
             },
 
-            _loadPlants: function (_this, sQuery, iSkip, iTop, fnCallback) {
+            _loadPlants: function (_this) {
                 let oModel = _this.getOwnerComponent().getModel("vendorModel");
-
+                let plantModel = new sap.ui.model.json.JSONModel();
                 let sUser = sap.ushell?.Container?.getUser().getId() || "CB9980000018";
-                // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
-                let aFilters = [];
+                let aFilters = [new sap.ui.model.Filter("Userid", "EQ", sUser)];
+                // let aFilters = [];
 
-                if (sQuery) {
-                    let oSearch = new sap.ui.model.Filter({
-                        filters: [
-                            new sap.ui.model.Filter("Plant", "Contains", sQuery),
-                            new sap.ui.model.Filter("PlantName", "Contains", sQuery)
-                        ],
-                        and: false
-                    });
-                    aFilters.push(oSearch);
-                }
+                // if (sQuery) {
+                //     let oSearch = new sap.ui.model.Filter({
+                //         filters: [
+                //             new sap.ui.model.Filter("Plant", "Contains", sQuery),
+                //             new sap.ui.model.Filter("PlantName", "Contains", sQuery)
+                //         ],
+                //         and: false
+                //     });
+                //     aFilters.push(oSearch);
+                // }
 
-                oModel.read("/plantVh", {
+                oModel.read("/UserIdToPlant", {
                     filters: aFilters,
-                    urlParameters: {
-                        "$top": iTop,
-                        "$skip": iSkip
-                    },
+                    // urlParameters: {
+                    //     "$top": iTop,
+                    //     "$skip": iSkip
+                    // },
                     success: (oData) => {
-                        fnCallback(oData);
+                        plantModel.setData(oData.results);
+                        _this.getView().byId("idDropdownPlant").setModel(plantModel);
+                        // fnCallback(oData);
                     },
                     error: () => {
                         sap.m.MessageToast.show("Error fetching Plants.");

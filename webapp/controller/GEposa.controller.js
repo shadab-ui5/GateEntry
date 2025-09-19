@@ -63,7 +63,8 @@ sap.ui.define([
             this.byId("idRAPO_LR_Date").setMaxDate(new Date);
             this.f4HelpModel = this.getOwnerComponent().getModel("vendorModel");
             this.inGateEntryModel = this.getOwnerComponent().getModel("vendorModel");
-            that.getPlantData();
+            Models._loadPlants(this);
+            // that.getPlantData();
             oRouter.getRoute("RouteGEWasn").attachPatternMatched(this._onRouteMatched, this);
         },
         _onRouteMatched: function () {
@@ -112,7 +113,7 @@ sap.ui.define([
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
                     new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedPOs_vendor),
-                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03')
+                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.NE, '02')
                 ],
                 and: true
             });
@@ -1310,6 +1311,7 @@ sap.ui.define([
                 "Vehicleno": Vehicleno,
                 "Transporter": Transporter,
                 "Status": "01",
+                "Vendorname":this.selectedPOSchAggrVendorName,
                 "to_Item": itemData
             };
 

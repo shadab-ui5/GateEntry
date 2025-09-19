@@ -40,9 +40,9 @@ sap.ui.define([
             // set models at view level
             this.getView().setModel(oAsnItemsModel, "AsnItemsModel");
             this.getView().setModel(oAsnHeaderModel, "AsnHeaderModel");
-            
+
             let currentAsn = oEvent.getParameter("arguments").asn;
-            this.sAsn=currentAsn;
+            this.sAsn = currentAsn;
             if (!oAsnItemsModel && !oAsnHeaderModel) {
                 this.getView().setBusy(false);
                 this.onNavBack();
@@ -70,11 +70,13 @@ sap.ui.define([
             let that = this;
             let InvoiceNo = that.getView().byId("idDocInvNo").getText();
             let InvoiceDate = that.getView().byId("idRAPO_InvDate").getText(),
-                Vendor = that.getView().byId("idSupplier").getText();
+                Vendor = that.getView().byId("idSupplier").getText(),
+                Vendorname = that.getView().byId("idSupplierName").getText();
             let oQrCodeData = {
                 InvoiceNo,
                 InvoiceDate,
                 Vendor,
+                Vendorname,
                 "AsnNo": this.sAsn
             }
             MessageBox.confirm("Are you sure you want to save this Gate Entry?", {
@@ -217,7 +219,7 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Supplier: ( ${qrData.Vendor} )`);
+            doc.text(2, 21, `Supplier: ${qrData.Vendorname}( ${qrData.Vendor} )`);
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },

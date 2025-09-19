@@ -37,7 +37,7 @@
 					    path: '/',
                         sorter: { path: 'Plant' }
                     }">
-                                <core:Item key="{Plant}" text="{Plant} - {PlantName}"/>
+                                <core:Item key="{Plant}" text="{Plant} - {Plantname}"/>
                             </ComboBox>
                         </VBox>
                         <VBox width="20%">

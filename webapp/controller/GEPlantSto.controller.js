@@ -59,11 +59,13 @@ sap.ui.define([
             let oDateFormat = DateFormat.getInstance({
                 pattern: "yyyy-MM-dd"
             });
+            this.loginUser = "";
             let formattedDate = oDateFormat.format(tDate); //`${tDate.getFullYear()}/${String(tDate.getMonth() + 1).padStart(2, '0')}/${String(tDate.getDate()).padStart(2, '0')}`;
             this.byId("idRAII_Date").setValue(formattedDate);
             let currentTime = `${tDate.getHours()}:${tDate.getMinutes()}:${tDate.getSeconds()}`;
             this.byId("idRAII_Time").setValue(currentTime);
-            that.getPlantData();
+            // that.getPlantData();
+            Models._loadPlants(this);
             that.getVendor("");
             oRouter.getRoute("RouteGEAsItIs").attachPatternMatched(this._onRouteMatched, this);
         },
@@ -104,7 +106,7 @@ sap.ui.define([
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
                     new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedVendor),
-                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03')
+                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.NE, '02')
                 ],
                 and: true
             });
@@ -114,7 +116,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/gateHrd", {
+            this.f4HelpModel.read("/validateInvoice", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -844,6 +846,8 @@ sap.ui.define([
                                 return oContext.getObject();
                             });
                             selectedInput.setValue(selectedValue[0].Supplier);
+                            that.Vendorname=selectedValue[0].SupplierName;
+                            that.Vendorcode=selectedValue[0].Supplier;
                             that.vendorValue = `${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
                             that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
@@ -1105,7 +1109,7 @@ sap.ui.define([
                 VehicleCapacity = oView.byId("idRAII_VehicalCapacity").getValue(),
                 Transporter = oView.byId("idRAII_Trasporter").getValue(),
                 TransporterCode = oView.byId("idRAII_TrasporterCode").getValue(),
-                Vendor = this.selectedPOSchAggrVendor,
+                Vendor = that.Vendorcode,
                 Ewayno = oView.byId("idRAII_EwayNo").getValue(),
                 EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
                 Amount = oView.byId("idRAII_Amount").getValue(),
@@ -1171,6 +1175,7 @@ sap.ui.define([
                 "Amount": parseFloat(Amount).toFixed(2),
                 "Vehicleno": Vehicleno,
                 "Transporter": Transporter,
+                "Vendorname":that.Vendorname,
                 "Status": "01",
                 "to_Item": itemData
             };
