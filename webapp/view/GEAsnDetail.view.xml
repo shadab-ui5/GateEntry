@@ -46,7 +46,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox21" width="20%">
                             <Label id="_IDGenLabel23" text="Date"/>
-                            <Text id="idRAPO_Date" text="{ path: 'AsnHeaderModel>/SystemDate', formatter: '.formatter.formatDateToYyyyMmDd' }" width="75%" />
+                            <Text id="idRAPO_Date" text="{ path: 'AsnHeaderModel>/SystemDate', formatter: '.formatter.formatDateToDDMMYYYY' }" width="75%" />
                         </VBox>
                         <VBox id="_IDGenVBox22" width="20%">
                             <Label id="_IDGenLabel24" text="Time"/>
@@ -57,7 +57,7 @@
 
                         <VBox id="_IDGenVBox6" width="20%">
                             <Label id="_IDGenLabel6" text="Invoice Date" required="true"/>
-                            <Text id="idRAPO_InvDate" width="75%" text="{ path: 'AsnHeaderModel>/InvoiceDate', formatter: '.formatter.formatDateToYyyyMmDd' }"/>
+                            <Text id="idRAPO_InvDate" width="75%" text="{ path: 'AsnHeaderModel>/InvoiceDate', formatter: '.formatter.formatDateToDDMMYYYY' }"/>
                         </VBox>
                         <VBox id="_IDGenVBox7" width="20%">
                             <Label id="_IDGenLabel7" text="Vehical Number" required="true"/>
@@ -73,7 +73,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox24" width="20%">
                             <Label id="_IDGenLabel29" text="Eway Bill Date"/>
-                            <Text id="idRAPO_EWAY_Date" width="75%" text="{ path: 'AsnHeaderModel>/EwaybillDate', formatter: '.formatter.formatDateToYyyyMmDd' }" class="sapUiSmallMarginBottom"/>
+                            <Text id="idRAPO_EWAY_Date" width="75%" text="{ path: 'AsnHeaderModel>/EwaybillDate', formatter: '.formatter.formatDateToDDMMYYYY' }" class="sapUiSmallMarginBottom"/>
                         </VBox>
                     </HBox>
 
@@ -88,7 +88,7 @@
                         </VBox>
                         <VBox id="_IDGenVBox11" width="20%">
                             <Label id="_IDGenLabel11" text="LR Date"/>
-                            <Text id="idRAPO_LR_Date" width="75%" text="{ path: 'AsnHeaderModel>/Lrdate', formatter: '.formatter.formatDateToYyyyMmDd' }" class="sapUiSmallMarginBottom"/>
+                            <Text id="idRAPO_LR_Date" width="75%" text="{ path: 'AsnHeaderModel>/Lrdate', formatter: '.formatter.formatDateToDDMMYYYY' }" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox id="_IDGenVBox111" width="20%" visible="false">
                             <Label id="_IDGenLabel111" text="Supplier"/>
@@ -132,9 +132,7 @@
                                     <Column id="_IDGenColumn7">
                                         <Text id="_IDGenText11" text="Quantity" />
                                     </Column>
-                                    <Column visible="false">
-                                        <Text text="OrderQuantity" />
-                                    </Column>
+                                    
                                     <Column visible="false">
                                         <Text text="postedquantity" />
                                     </Column>
@@ -147,9 +145,8 @@
                                             <Text id="_IDGenText16" text="{AsnItemsModel>Material}"/>
                                             <Text id="_IDGenText17" text="{AsnItemsModel>Materialdesc}"/>
                                             <!-- <Text id="_IDGenText" value="{Material}" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="material_RAPOValueHelp"/> -->
-                                            <Text id="_" text="{AsnItemsModel>BaseUnit}" />
+                                            <Text id="_" text="{AsnItemsModel>Uom}" />
                                             <Text id="idInpRAPOItemQuantity" text="{AsnItemsModel>Postedquantity}" />
-                                            <Text text="{AsnItemsModel>Uom}" />
                                             <Text text="{AsnItemsModel>postedquantity}" />
                                         </cells>
                                     </ColumnListItem>

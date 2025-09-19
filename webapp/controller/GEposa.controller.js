@@ -122,7 +122,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/gateHrd", {
+            this.f4HelpModel.read("/validateInvoice", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
@@ -1266,7 +1266,8 @@ sap.ui.define([
                         "Material": item.Material,
                         "Materialdesc": item.PurchasingDocumentItemText,
                         "Quantity": parseFloat(item.TargetQuantity).toFixed(2),
-                        "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2)
+                        "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
+                        "Uom":item.OrderQuantityUnit
                     };
                 } else {
                     obj = {
@@ -1275,7 +1276,8 @@ sap.ui.define([
                         "Material": item.Material,
                         "Materialdesc": item.PurchaseOrderItemText,
                         "Quantity": parseFloat(item.Quantity).toFixed(2),
-                        "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2)
+                        "Postedquantity": parseFloat(item.EnteredQuantity).toFixed(2),
+                        "Uom":item.BaseUnit
                     };
                 }
 

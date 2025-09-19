@@ -9,7 +9,7 @@ sap.ui.define([], function () {
             const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
             const yyyy = date.getFullYear();
 
-            return `${dd}.${mm}.${yyyy}`;
+            return `${dd}-${mm}-${yyyy}`;
         },
         formatPurchaseOrderText: function (sPo, sPoText) {
             return sPo + " [ " + (sPoText ? sPoText : "NA") + " ]";

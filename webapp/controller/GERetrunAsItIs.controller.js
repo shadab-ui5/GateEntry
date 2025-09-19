@@ -1130,7 +1130,8 @@ sap.ui.define([
                     "Material": item.Product,
                     "Materialdesc": item.ProductDescription,
                     "Quantity": "0.00",
-                    "Postedquantity": "0.00"
+                    "Postedquantity": parseFloat(item.AvailableQuantity).toFixed(2),
+                    "Uom":item.BaseUnit
                 };
 
 

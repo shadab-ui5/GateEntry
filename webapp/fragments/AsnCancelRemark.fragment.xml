@@ -6,6 +6,8 @@
         id="idRemarkDialog"
         title="Add Remark"
         class="sapUiContentPadding"
+        contentWidth="40%"
+        contentHeight="auto"
         stretchOnPhone="true">
         
         <VBox class="sapUiSmallMargin">
@@ -15,7 +17,7 @@
             <Label id="idAsnNumberText" text="{/SelectedASN}" />
             </HBox>
             <!-- Remark Input -->
-            <Label text="Remark :" design="Bold" />
+            
             <TextArea
                 id="idRemarkInput"
                 value="{/Remark}"

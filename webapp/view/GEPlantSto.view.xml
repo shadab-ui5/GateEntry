@@ -66,7 +66,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Invoice Date" required="true"/>
-                            <DatePicker id="idRAII_InvDate" width="75%" placeholder="Select Date" change="handleChange_RAPO_InvDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                            <DatePicker id="idRAII_InvDate" width="75%" placeholder="Select Date" change="handleChange_RAPO_InvDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="Eway Bill Number" required="true"/>
@@ -74,7 +74,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Eway Bill Date" required="true"/>
-                            <DatePicker id="idRAII_EwayDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" />
+                            <DatePicker id="idRAII_EwayDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
                         <VBox width="20%">
                             <Label text="Transporter" required="true"/>
@@ -111,7 +111,7 @@
                         </VBox>
                         <!-- <VBox width="20%">
                             <Label text="LR Date"/>
-                            <DatePicker id="idRAII_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="yyyy-MM-dd" enabled="true" class="sapUiSmallMarginBottom"/>
+                            <DatePicker id="idRAII_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="LR Number"/>

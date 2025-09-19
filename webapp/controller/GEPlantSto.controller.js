@@ -844,7 +844,7 @@ sap.ui.define([
                                 return oContext.getObject();
                             });
                             selectedInput.setValue(selectedValue[0].Supplier);
-                            that.vendorValue=`${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
+                            that.vendorValue = `${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
                             that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
                     },
@@ -1110,7 +1110,7 @@ sap.ui.define([
                 EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
-            if (InvoiceNo === "" || (!InvoiceDate)  || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if (InvoiceNo === "" || (!InvoiceDate) || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }
@@ -1132,6 +1132,7 @@ sap.ui.define([
                     "Materialdesc": item.ProductDescription,
                     "Quantity": "0.00",
                     "Postedquantity": parseFloat(item.AvailableQuantity).toFixed(2),
+                    "Uom": item.BaseUnit
 
                 }
                 itemData.push(obj);
@@ -1293,7 +1294,10 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
-            doc.text(2, 21, `Vendor: ${this.vendorValue}`);
+            // doc.text(2, 21, `Vendor: ${this.vendorValue}`);
+            let vendorText = `Vendor: ${this.vendorValue}`;
+            let wrappedVendor = doc.splitTextToSize(vendorText, 40);
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
 
             // Save the PDF to a file
             doc.save(`Gate_Entry_IN${qrData.AsnNo}.pdf`);

@@ -32,7 +32,7 @@
                 </fb:FilterGroupItem>
                 <fb:FilterGroupItem id="_IDGenFilterGroupItem17" name="invoiceDate" label="Invoice Date" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
-                        <DateRangeSelection id="idprintPurchDate" class="DRS1" displayFormat="yyyy-MM-dd" change="handleChange"/>
+                        <DateRangeSelection id="idprintPurchDate" class="DRS1" displayFormat="dd-MM-yyyy" change="handleChange"/>
                     </fb:control>
                 </fb:FilterGroupItem>
             </fb:filterGroupItems>

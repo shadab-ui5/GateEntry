@@ -108,7 +108,89 @@ sap.ui.define([
                     // aFilters.push(oOrFilter);
 
 
-                    oModel.read("/gateHrd", {
+                    oModel.read("/gateEntryReprint", {
+                        filters: aFilters,
+                        urlParameters: {
+                            "$top": iTop,
+                            "$skip": iSkip,
+                            "$orderby": "AsnNo desc",
+                        },
+                        success: (oData) => {
+
+                            resolve(oData.results)
+
+                        },
+                        error: (err) => {
+                            sap.m.MessageToast.show("Error fetching Purchase Orders.");
+                            console.log(err)
+                            reject(err)
+                        }
+                    });
+                })
+            },
+            _cancelGateEntry: function (_this, sQuery, iSkip, iTop) {
+                return new Promise((resolve, reject) => {
+                    let oStartDateFormat = DateFormat.getInstance({
+                        pattern: "yyyy-MM-dd"
+                    });
+                    let oEndDateFormat = DateFormat.getInstance({
+                        pattern: "yyyy-MM-dd"
+                    });
+                    let oModel = _this.getOwnerComponent().getModel("vendorModel");
+                    let oSupplierVHModel = _this.getOwnerComponent().getModel("SupplierVHModel").getData();
+                    const uniqueSupplier = [...new Set(oSupplierVHModel.map(obj => obj.Supplier))];
+
+                    console.log("Unique Suppliers:", uniqueSupplier)
+                    // let aFilters = [new sap.ui.model.Filter("CreatedByUser", "EQ", sUser)];
+                    let aFilters = [];
+                    // aFilters.push(new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03'));
+                    if (sQuery === "onFilterGo") {
+                        // Get field values from the view
+                        let asnFieldValue = _this.byId("asnField").getValue();
+                        let geFieldValue = _this.byId("geField").getValue();
+                        let invoiceFieldValue = _this.byId("invoiceField").getValue();
+                        let oDateRange = _this.byId("idprintPurchDate").getDateValue();
+                        let oDateRangeTo = _this.byId("idprintPurchDate").getSecondDateValue();
+
+                        // Add ASN filter if value is provided
+                        if (asnFieldValue) {
+                            aFilters.push(new sap.ui.model.Filter("AsnNo", "Contains", asnFieldValue));
+                        }
+                        if (geFieldValue) {
+                            aFilters.push(new sap.ui.model.Filter("GateEntryId", "Contains", geFieldValue));
+                        }
+                        // Add Invoice No filter if value is provided
+                        if (invoiceFieldValue) {
+                            aFilters.push(new sap.ui.model.Filter("InvoiceNo", "Contains", invoiceFieldValue));
+                        }
+                        // Add Invoice Date range filter if both dates are selected
+                        if (oDateRange && oDateRangeTo) {
+                            const fromDate = oStartDateFormat.format(new Date(oDateRange)); // "2025-08-07"
+                            const toDate = oEndDateFormat.format(new Date(oDateRangeTo));     // "2025-08-08"
+                            aFilters.push(new sap.ui.model.Filter("InvoiceDate", sap.ui.model.FilterOperator.BT, fromDate, toDate));
+                        }
+                    } else if (sQuery) {
+                        let oSearch = new sap.ui.model.Filter({
+                            filters: [
+                                new sap.ui.model.Filter("AsnNo", "Contains", sQuery),
+                                new sap.ui.model.Filter("InvoiceNo", "Contains", sQuery),
+                                new sap.ui.model.Filter("Plant", "Contains", sQuery),
+                                new sap.ui.model.Filter("Vendor", "Contains", sQuery),
+                            ],
+                            and: false
+                        });
+                        aFilters.push(oSearch);
+                    }
+                    // const oOrFilter = new sap.ui.model.Filter(
+                    //     uniqueSupplier.map(group =>
+                    //         new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, group)
+                    //     ),
+                    //     false // OR
+                    // );
+                    // aFilters.push(oOrFilter);
+
+
+                    oModel.read("/gateEntryCancel", {
                         filters: aFilters,
                         urlParameters: {
                             "$top": iTop,

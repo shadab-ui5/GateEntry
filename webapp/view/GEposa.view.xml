@@ -61,7 +61,7 @@
                     <HBox class="sapUiSmallMarginTop">
                         <VBox width="20%">
                             <Label text="Invoice Date" required="true"/>
-                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" />
+                            <DatePicker id="idRAPO_InvDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
 
 
@@ -78,8 +78,8 @@
                             <Input id="idRAPO_EwayNo" maxLength="50" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Date" required="true"/>
-                            <DatePicker id="idRAPO_EwayDate" width="75%" placeholder="Select Date" displayFormat="yyyy-MM-dd" enabled="true" />
+                            <Label text="Eway Bill Date"/>
+                            <DatePicker id="idRAPO_EwayDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
                     </HBox>
 
@@ -91,7 +91,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="LR Date"/>
-                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="yyyy-MM-dd" enabled="true" />
+                            <DatePicker id="idRAPO_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
                         <VBox width="20%">
                             <Label text="LR Number"/>

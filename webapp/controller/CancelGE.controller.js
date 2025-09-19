@@ -80,7 +80,7 @@ sap.ui.define([
             // Load PO data and build company code model
             let _this = this;
 
-            Models._loadAsn(this, this.sQuery, this.iSkip, this.iTop)
+            Models._cancelGateEntry(this, this.sQuery, this.iSkip, this.iTop)
                 .then(function (aResults) {
                     let oAsnModel = _this.getOwnerComponent().getModel("AsnHeaderModel");
                     let aExisting = oAsnModel.setProperty("/AsnData", aResults) || [];
@@ -351,7 +351,7 @@ sap.ui.define([
             this.oBusyDialog.setText("Loading more data...");
             this.oBusyDialog.open();
 
-            Models._loadAsn(this, this.sQuery, this.iSkip, this.iTop)
+            Models._cancelGateEntry(this, this.sQuery, this.iSkip, this.iTop)
                 .then(function (aResults) {
                     let oAsnModel = _this.getOwnerComponent().getModel("AsnHeaderModel");
                     let aExisting = oAsnModel.getProperty("/AsnData") || [];
