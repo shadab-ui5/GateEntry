@@ -1244,7 +1244,7 @@ sap.ui.define([
                 Ponumber = oView.byId("idRAPO_PO_Order").getValue(),
                 Vendor = this.selectedPOSchAggrVendor,
                 Ewayno = oView.byId("idRAPO_EwayNo").getValue(),
-                EwaybillDate = oDateFormat.format(oView.byId("idRAPO_EwayDate").getDateValue()),
+                EwaybillDate = oDateFormat.format(oView.byId("idRAPO_EwayDate").getDateValue())|| null,
                 Amount = oView.byId("idRAPO_Amount").getValue(),
                 Vehicleno = oView.byId("idRAPO_VehicalNo").getValue(),
                 Transporter = oView.byId("idRAPO_Trasporter").getValue();
