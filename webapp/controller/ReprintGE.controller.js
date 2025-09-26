@@ -267,7 +267,7 @@ sap.ui.define([
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
             doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
-            doc.text(2, 9, `Gate Entry Number: IN ${qrData.AsnNo}`);
+            doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
             doc.text(2, 13, `Invoice Number : ${qrData.InvoiceNo}`);
             doc.text(2, 17, `Invoice Date: ${formattedInvDate}`);
 

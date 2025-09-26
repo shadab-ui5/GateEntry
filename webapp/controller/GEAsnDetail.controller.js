@@ -198,11 +198,7 @@ sap.ui.define([
             //var doc = new jsPDF();
             var doc = new jsPDF('l', 'mm', [50, 25]);
 
-            let invDate = new Date(qrData.InvoiceDate);
-            let formattedInvDate = invDate.getDate().toString().padStart(2, '0') + '/' +
-                (invDate.getMonth() + 1).toString().padStart(2, '0') + '/' +
-                invDate.getFullYear();
-            let sysDate = new Date(qrData.SystemDate);
+            let invDate = qrData.InvoiceDate.replace(/-/g, "/");
 
             doc.setFont("Helvetica", 'bold');
             doc.setFontSize(4.5);
@@ -211,7 +207,7 @@ sap.ui.define([
             doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
             doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
             doc.text(2, 13, `Invoice Number.: ${qrData.InvoiceNo}`);
-            doc.text(2, 17, `Invoice Date: ${formattedInvDate}`);
+            doc.text(2, 17, `Invoice Date: ${invDate}`);
 
             // Get the canvas element for the QR code
             var canvas = document.getElementById('qrCanvas');
