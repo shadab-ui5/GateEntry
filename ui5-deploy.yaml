@@ -18,6 +18,6 @@ builder:
         app:
           name: ZGATEAPPS
           package: ZMM_VENDOR_PORTAL
-          transport: TMOK900379
+          transport: TMOK900697
         exclude:
           - /test/
