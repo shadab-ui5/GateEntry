@@ -99,7 +99,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Vehical Capacity" required="true"/>
-                            <Input id="idRAII_VehicalCapacity" maxLength="10" width="75%"/>
+                            <Input id="idRAII_VehicalCapacity" type="Number" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%" visible="false">
                             <Label text="Fiscal Year"/>

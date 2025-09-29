@@ -13,6 +13,7 @@
 							<IconTabFilter id="_IDGenIconTabFilter2" text="Gate Entry w/o ASN" key="RouteGEWasn" />
 							<IconTabFilter id="_IDGenIconTabFilter"  text="In Plant STO" key="RouteGEPlantSto" />
 							<IconTabFilter id="_IDGenIconTabFilter4"  text="Receipt As Is" key="RouteGEAsItIs" />
+							<IconTabFilter id="_IDGenIconTabFilter7"  text="Gate Entry Retrun" key="RouteGEReturn" />
 							<IconTabFilter id="_IDGenIconTabFilter5" text="Reprint Gate Entry" key="RouteGEReprint" />
 							<IconTabFilter id="_IDGenIconTabFilter6" text="Cancel Gate Entry" key="RouteCancelGE" />
 						</items>
