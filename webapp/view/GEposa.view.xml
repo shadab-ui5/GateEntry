@@ -74,7 +74,7 @@
                             <Input id="idRAPO_Trasporter"  maxLength="50" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Number" required="true"/>
+                            <Label text="Eway Bill Number"/>
                             <Input id="idRAPO_EwayNo" maxLength="50" width="75%"/>
                         </VBox>
                         <VBox width="20%">

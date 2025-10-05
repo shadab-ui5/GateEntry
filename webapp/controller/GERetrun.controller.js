@@ -850,7 +850,7 @@ sap.ui.define([
                             that.Vendorname=selectedValue[0].SupplierName;
                             that.Vendorcode=selectedValue[0].Supplier;
                             that.vendorValue = `${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
-                            that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
+                            // that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
                     },
                     liveChange: function (oEvent) {
@@ -1100,7 +1100,7 @@ sap.ui.define([
             hours = time[0].length === 1 ? ('0' + time[0]) : time[0],
             SystemTime = `PT${hours}H${time[1]}M${time[1]}S`;*/
             var Fiscalyear = oView.byId("idRAII_FiscalYear").getValue(),
-                InvoiceNo = oView.byId("idRAII_DocInvNo").getValue(),
+                // InvoiceNo = oView.byId("idRAII_DocInvNo").getValue(),
                 InvoiceDate = oDateFormat.format(oView.byId("idRAII_InvDate").getDateValue()),
                 // Lrdate = oDateFormat.format(oView.byId("idRAPO_LR_Date").getDateValue()),
                 // Lrnumber = oView.byId("idRAPO_LR_No").getValue(),
@@ -1115,7 +1115,7 @@ sap.ui.define([
                 EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
-            if (InvoiceNo === "" || (!InvoiceDate) || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if ( (!InvoiceDate) || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }
@@ -1156,7 +1156,7 @@ sap.ui.define([
             let payload = {
                 "AsnNo": "",
                 "GateEntryId": "",
-                "InvoiceNo": InvoiceNo,
+                "InvoiceNo": "",
                 "Plant": Plant,
                 "Inwardtype": "RECASIS",
                 "Fiscalyear": Fiscalyear,
@@ -1291,8 +1291,8 @@ sap.ui.define([
 
             doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
             doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
-            doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
-            doc.text(2, 17, `Inv Date: ${formattedInvDate}`);
+            // doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
+            doc.text(2, 13, `Inv Date: ${formattedInvDate}`);
 
             // Get the canvas element for the QR code
             var canvas = document.getElementById('qrCanvas');
@@ -1318,7 +1318,7 @@ sap.ui.define([
             // oView.byId("idRAII_LR_No").setValue();
             oView.byId("idRAII_Challan").setValue();
             oView.byId("idRAII_Vendor").setValue();
-            oView.byId("idRAII_DocInvNo").setValue();
+            // oView.byId("idRAII_DocInvNo").setValue();
             oView.byId("idRAII_VehicalType").setValue();
             oView.byId("idRAII_VehicalCapacity").setValue();
             oView.byId("idRAII_TrasporterCode").setValue();

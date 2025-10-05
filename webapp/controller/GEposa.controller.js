@@ -279,6 +279,98 @@ sap.ui.define([
             });
         },
 
+        // getPurchaseOrders: function (sPlant, aExtraFilters = []) {
+        //     let that = this;
+        //     that.loadedPO = false;
+        //     that.aPurchaseOrdersData = [];
+        //     that.aUniquePurchaseOrders = [];
+
+        //     return new Promise(function (resolve, reject) {
+        //         // Base filter by Plant (always included if sPlant is provided)
+        //         let aFilters = [];
+        //         if (sPlant) {
+        //             aFilters.push(new sap.ui.model.Filter("Plant", sap.ui.model.FilterOperator.EQ, sPlant));
+        //         }
+
+        //         // Add extra filters if passed
+        //         if (aExtraFilters && aExtraFilters.length) {
+        //             aFilters = aFilters.concat(aExtraFilters);
+        //         }
+
+        //         that.f4HelpModel.read("/ItemforPo", {
+        //             filters: aFilters,
+        //             urlParameters: that.oParameters,
+        //             success: function (oResponse) {
+        //                 that.aPurchaseOrdersData = oResponse.results;
+
+        //                 // Keep unique by PurchaseOrder
+        //                 const key = 'PurchaseOrder';
+        //                 that.aUniquePurchaseOrders = [
+        //                     ...new Map(oResponse.results.map(item => [item[key], item])).values()
+        //                 ];
+
+        //                 // Update local JSON model so fragment list refreshes
+        //                 const oLocalModel = sap.ui.getCore().getModel("localModel");
+        //                 if (oLocalModel) {
+        //                     oLocalModel.setProperty("/filter1Items", that.aUniquePurchaseOrders);
+        //                 }
+
+        //                 that.loadedPO = true;
+        //                 resolve(oResponse.results);
+        //             },
+        //             error: function (oError) {
+        //                 MessageBox.error("Failed to load PO Data");
+        //                 console.error(oError);
+        //                 reject(oError);
+        //             }
+        //         });
+        //     });
+        // },
+        // getSchAggrement: function (sPlant, aExtraFilters = []) {
+        //     let that = this;
+        //     that.loadedSch = false;
+        //     that.aSchAggrementData = [];
+        //     that.aUniqueSchAggrements = [];
+
+        //     return new Promise(function (resolve, reject) {
+        //         // Base filter
+        //         let aFilters = [];
+        //         if (sPlant) {
+        //             aFilters.push(new sap.ui.model.Filter("Plant", sap.ui.model.FilterOperator.EQ, sPlant));
+        //         }
+
+        //         // Add any additional filters
+        //         if (aExtraFilters && aExtraFilters.length) {
+        //             aFilters = aFilters.concat(aExtraFilters);
+        //         }
+
+        //         that.f4HelpModel.read("/ItemforSchAgr", {
+        //             filters: aFilters,
+        //             urlParameters: that.oParameters,
+        //             success: function (oResponse) {
+        //                 that.aSchAggrementData = oResponse.results;
+
+        //                 const key = 'SchedulingAgreement';
+        //                 that.aUniqueSchAggrements = [
+        //                     ...new Map(oResponse.results.map(item => [item[key], item])).values()
+        //                 ];
+
+        //                 const oLocalModel = sap.ui.getCore().getModel("localModel");
+        //                 if (oLocalModel) {
+        //                     oLocalModel.setProperty("/filter2Items", that.aUniqueSchAggrements);
+        //                 }
+
+        //                 that.loadedSch = true;
+        //                 resolve(oResponse.results);
+        //             },
+        //             error: function (oError) {
+        //                 MessageBox.error("Failed to load Scheduling Agreement Data");
+        //                 console.error(oError);
+        //                 reject(oError);
+        //             }
+        //         });
+        //     });
+        // },
 
         getVendor: function (sPlant) {
             let that = this;
@@ -407,6 +499,68 @@ sap.ui.define([
                 this._oValueHelpDialog.open();
             }
         },
+
+        // _openPOValueHelp: async function (oEvent) {
+        //     let that = this;
+        //     let oView = this.getView();
+        //     let sPlant = oView.byId("idDropdownPlant").getSelectedKey();
+
+        //     if (!sPlant) {
+        //         sap.m.MessageToast.show("Please select a Plant first");
+        //         return;
+        //     }
+
+        //     // 🧠 Ensure local JSON model exists globally
+        //     if (!sap.ui.getCore().getModel("localModel")) {
+        //         sap.ui.getCore().setModel(new sap.ui.model.json.JSONModel({
+        //             filter1Items: [],
+        //             filter2Items: []
+        //         }), "localModel");
+        //     }
+
+        //     // 🧩 Load data before opening dialog
+        //     // Call both in parallel if not loaded yet
+        //     if (!this.loadedPO || !this.loadedSch) {
+        //         sap.ui.core.BusyIndicator.show(0);
+        //         try {
+        //             await Promise.all([
+        //                 this.getPurchaseOrders([], sPlant),
+        //                 this.getSchAggrement([], sPlant)
+        //             ]);
+        //         } catch (e) {
+        //             console.error("Error loading initial data", e);
+        //         } finally {
+        //             sap.ui.core.BusyIndicator.hide();
+        //         }
+        //     }
+
+        //     // 💾 Bind retrieved data to the local model
+        //     const oLocalModel = sap.ui.getCore().getModel("localModel");
+        //     oLocalModel.setProperty("/filter1Items", this.aUniquePurchaseOrders || []);
+        //     oLocalModel.setProperty("/filter2Items", this.aUniqueSchAggrements || []);
+
+        //     // 🧩 Load and open the fragment
+        //     if (!this._oValueHelpDialog) {
+        //         const oDialog = await Fragment.load({
+        //             id: oView.getId(),
+        //             name: "hodek.gateapps.fragments.PurchaseOrderDialog",
+        //             controller: this
+        //         });
+
+        //         this._oValueHelpDialog = oDialog;
+        //         oView.addDependent(oDialog);
+
+        //         // Attach the local model to fragment
+        //         oDialog.setModel(oLocalModel, "localModel");
+
+        //         oDialog.open();
+        //     } else {
+        //         // Reuse existing instance
+        //         this._oValueHelpDialog.getModel("localModel").refresh(true);
+        //         this._oValueHelpDialog.open();
+        //     }
+        // },
+
         POValueHelp: function () {
             if (this.loadedPO && this.loadedSch) {
                 // Proceed to open the fragment
@@ -434,6 +588,42 @@ sap.ui.define([
             oBinding.filter(oFilter);
         },
 
+
+        // onSearchPoList: function (oEvent) {
+        //     let sValue = oEvent.getParameter('query').trim();
+        //     let sPlant = this.sCurrentPlant; // for example, store it earlier
+        //     let bIsPO = oEvent.getSource().getId().includes("searchFilter1");
+
+        //     // Build filters dynamically
+        //     let aExtraFilters = [];
+
+        //     if (sValue) {
+        //         if (bIsPO) {
+        //             aExtraFilters.push(new sap.ui.model.Filter({
+        //                 filters: [
+        //                     new sap.ui.model.Filter("PurchaseOrder", sap.ui.model.FilterOperator.Contains, sValue),
+        //                     new sap.ui.model.Filter("PurchaseOrderItemText", sap.ui.model.FilterOperator.Contains, sValue)
+        //                 ],
+        //                 and: false
+        //             }));
+        //         } else {
+        //             aExtraFilters.push(new sap.ui.model.Filter({
+        //                 filters: [
+        //                     new sap.ui.model.Filter("SchedulingAgreement", sap.ui.model.FilterOperator.Contains, sValue),
+        //                     new sap.ui.model.Filter("PurchasingDocumentItemText", sap.ui.model.FilterOperator.Contains, sValue)
+        //                 ],
+        //                 and: false
+        //             }));
+        //         }
+        //     }
+
+        //     // Call the appropriate method
+        //     if (bIsPO) {
+        //         this.getPurchaseOrders(sPlant, aExtraFilters);
+        //     } else {
+        //         this.getSchAggrement(sPlant, aExtraFilters);
+        //     }
+        // },
         //On selecting Purchase Order/Scheduling Aggrement
         onListItemPress: function (oEvent) {
             let that = this;
@@ -1244,11 +1434,11 @@ sap.ui.define([
                 Ponumber = oView.byId("idRAPO_PO_Order").getValue(),
                 Vendor = this.selectedPOSchAggrVendor,
                 Ewayno = oView.byId("idRAPO_EwayNo").getValue(),
-                EwaybillDate = oDateFormat.format(oView.byId("idRAPO_EwayDate").getDateValue())|| null,
+                EwaybillDate = oDateFormat.format(oView.byId("idRAPO_EwayDate").getDateValue()) || null,
                 Amount = oView.byId("idRAPO_Amount").getValue(),
                 Vehicleno = oView.byId("idRAPO_VehicalNo").getValue(),
                 Transporter = oView.byId("idRAPO_Trasporter").getValue();
-            if (InvoiceNo === "" || (!InvoiceDate) || Ponumber === "" || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if (InvoiceNo === "" || (!InvoiceDate) || Ponumber === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }

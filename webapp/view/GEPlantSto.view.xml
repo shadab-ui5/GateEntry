@@ -45,7 +45,7 @@
                             <Input id="idRAII_Vendor" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="vendorValueHelp" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Challan Number" required="true"/>
+                            <Label text="Challan Number"/>
                             <Input id="idRAII_Challan" value="" liveChange="onChangeAmount" maxLength="10" width="75%"/>
                         </VBox>
 
@@ -69,11 +69,11 @@
                             <DatePicker id="idRAII_InvDate" width="75%" placeholder="Select Date" change="handleChange_RAPO_InvDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Number" required="true"/>
+                            <Label text="Eway Bill Number"/>
                             <Input id="idRAII_EwayNo" maxLength="50" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Date" required="true"/>
+                            <Label text="Eway Bill Date"/>
                             <DatePicker id="idRAII_EwayDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
                         <VBox width="20%">
@@ -90,15 +90,15 @@
                             <Input id="idRAII_Amount" type="Number" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Number" required="true"/>
+                            <Label text="Vehicle Number" required="true"/>
                             <Input id="idRAII_VehicalNo" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Type" required="true"/>
+                            <Label text="Vehicle Type" required="true"/>
                             <Input id="idRAII_VehicalType" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Capacity" required="true"/>
+                            <Label text="Vehicle Capacity" required="true"/>
                             <Input id="idRAII_VehicalCapacity" type="Number" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%" visible="false">

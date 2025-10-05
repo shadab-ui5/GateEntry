@@ -1114,7 +1114,7 @@ sap.ui.define([
                 EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
-            if (InvoiceNo === "" || (!InvoiceDate) || Ewayno === "" || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if (InvoiceNo === "" || (!InvoiceDate) || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }

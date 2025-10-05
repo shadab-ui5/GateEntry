@@ -60,27 +60,30 @@
                         </VBox>
                     </HBox>
                     <HBox class="sapUiTinyMarginTop">
-                        <VBox width="20%">
-                            <Label text="Invoice Number" required="true"/>
-                            <Input id="idRAII_DocInvNo" value="" change="onChangeRAII_DocInvNo" maxLength="16" width="75%"/>
-                        </VBox>
+                        <!-- <VBox width="20%">
+                            <Label text="Invoice Number" visible="false"/>
+                            <Input id="idRAII_DocInvNo" value="" change="onChangeRAII_DocInvNo" visible="false" maxLength="16" width="75%"/>
+                        </VBox> -->
                         <VBox width="20%">
                             <Label text="Invoice Date" required="true"/>
                             <DatePicker id="idRAII_InvDate" width="75%" placeholder="Select Date" change="handleChange_RAPO_InvDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Number" required="true"/>
+                            <Label text="Eway Bill Number"/>
                             <Input id="idRAII_EwayNo" maxLength="50" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Eway Bill Date" required="true"/>
+                            <Label text="Eway Bill Date"/>
                             <DatePicker id="idRAII_EwayDate" width="75%" placeholder="Select Date" displayFormat="dd-MM-yyyy" enabled="true" />
                         </VBox>
                         <VBox width="20%">
                             <Label text="Transporter" required="true"/>
                             <Input id="idRAII_Trasporter" maxLength="50" width="75%"/>
                         </VBox>
-
+                        <VBox width="20%">
+                            <Label text="Transporter Code" required="true"/>
+                            <Input id="idRAII_TrasporterCode" maxLength="50" width="75%"/>
+                        </VBox>
 
                     </HBox>
                     <HBox class="sapUiTinyMarginTop">
@@ -105,10 +108,7 @@
                             <Label text="Fiscal Year"/>
                             <Input id="idRAII_FiscalYear" value="" enabled="false" width="75%"/>
                         </VBox>
-                        <VBox width="20%">
-                            <Label text="Transporter Code" required="true"/>
-                            <Input id="idRAII_TrasporterCode" maxLength="50" width="75%"/>
-                        </VBox>
+
                         <!-- <VBox width="20%">
                             <Label text="LR Date"/>
                             <DatePicker id="idRAII_LR_Date" width="75%" placeholder="Select Date" change="handleChange_RAPO_LRDate" displayFormat="dd-MM-yyyy" enabled="true" class="sapUiSmallMarginBottom"/>
@@ -137,7 +137,7 @@
                         <Column>
                             <Text text="Item No" />
                         </Column>
-                        <Column  visible="false">
+                        <Column visible="false">
                             <Text text="Material" />
                         </Column>
                         <Column>
