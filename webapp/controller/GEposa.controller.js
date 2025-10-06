@@ -113,7 +113,7 @@ sap.ui.define([
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
                     new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedPOs_vendor),
-                    new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.NE, '02')
+                   
                 ],
                 and: true
             });
@@ -123,7 +123,7 @@ sap.ui.define([
                 value1: sValue
             });*/
 
-            this.f4HelpModel.read("/validateInvoice", {
+            this.f4HelpModel.read("/validateGateEntryInvoice", {
                 //filters: [filter1],
                 filters: [aFinalFilter],
                 success: function (oResponse) {
