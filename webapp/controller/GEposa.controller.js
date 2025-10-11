@@ -113,7 +113,7 @@ sap.ui.define([
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
                     new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedPOs_vendor),
-                   
+
                 ],
                 and: true
             });
@@ -724,7 +724,12 @@ sap.ui.define([
                 let selectedInput = oEvent.getSource();
                 let oCustomListItem = new sap.m.StandardListItem({
                     active: true,
-                    title: "{Material}",
+                    title: {
+                        parts: ["Material", "PurchaseOrderItemText"],
+                        formatter: function (sMaterial, sText) {
+                            return sMaterial ? sMaterial : sText;
+                        }
+                    },
                     description: "{PurchaseOrderItemText}"
                 });
 
@@ -743,8 +748,17 @@ sap.ui.define([
                             });
                             let isMaterialAlreadySelected = false;
                             that.getView().byId("idTable_RAPO").getModel().getData().forEach(item => {
-                                if (item.Material === selectedValue[0].Material) {
-                                    isMaterialAlreadySelected = true;
+
+                                if (item.Material) {
+                                    // Compare by Material if it's not empty
+                                    if (item.Material === selectedValue[0].Material) {
+                                        isMaterialAlreadySelected = true;
+                                    }
+                                } else {
+                                    // Compare by PurchaseOrderItemText if Material is empty
+                                    if (item.PurchaseOrderItemText === selectedValue[0].PurchaseOrderItemText) {
+                                        isMaterialAlreadySelected = true;
+                                    }
                                 }
                             });
                             if (isMaterialAlreadySelected) {
@@ -950,7 +964,7 @@ sap.ui.define([
                 amountInput.setValueState(sap.ui.core.ValueState.None);
                 return;
             }
-            if (binding.Material === "") {
+            if (binding.Material === "" && binding.PurchaseOrderItemText === "") {
                 MessageToast.show("Select Material");
                 oInput.setValue();
                 binding.AvailableQuantity = ""; //update entered Qty into available Quantity field
@@ -1449,6 +1463,7 @@ sap.ui.define([
                 if (item.AvailableQuantity === "" || item.EnteredQuantity === "") {
                     isQuantityEntered = false;
                 }
+
                 let obj
                 if (item.SchedulingAgreementItem) {
                     obj = {
@@ -1461,6 +1476,9 @@ sap.ui.define([
                         "Uom": item.OrderQuantityUnit
                     };
                 } else {
+                    if (item.Material2 === "X") {
+                        item.Material = "";
+                    }
                     obj = {
                         "Ponumber": Ponumber,
                         "LineItem": item.PurchaseOrderItem,

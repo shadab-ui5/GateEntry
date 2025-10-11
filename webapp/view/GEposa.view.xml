@@ -66,7 +66,7 @@
 
 
                         <VBox width="20%">
-                            <Label text="Vehical Number" required="true"/>
+                            <Label text="Vehicle Number" required="true"/>
                             <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">

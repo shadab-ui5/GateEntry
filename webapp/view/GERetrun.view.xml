@@ -46,9 +46,8 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Challan Number" required="true"/>
-                            <Input id="idRAII_Challan" value="" liveChange="onChangeAmount" maxLength="10" width="75%"/>
+                            <Input id="idRAII_Challan" value=""  maxLength="20" width="75%"/>
                         </VBox>
-
 
                         <VBox width="20%">
                             <Label text="Date"/>
@@ -93,15 +92,15 @@
                             <Input id="idRAII_Amount" type="Number" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Number" required="true"/>
-                            <Input id="idRAII_VehicalNo" maxLength="10" width="75%"/>
+                            <Label text="Vehicle Number" required="true"/>
+                            <Input id="idRAII_VehicalNo" maxLength="10" width="75%" />
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Type" required="true"/>
+                            <Label text="Vehicle Type" required="true"/>
                             <Input id="idRAII_VehicalType" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Capacity" required="true"/>
+                            <Label text="Vehicle Capacity" required="true"/>
                             <Input id="idRAII_VehicalCapacity" type="Number" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%" visible="false">
@@ -134,19 +133,19 @@
                         </OverflowToolbar>
                     </headerToolbar>
                     <columns>
-                        <Column>
+                        <Column width="5rem">
                             <Text text="Item No" />
                         </Column>
                         <Column visible="false">
                             <Text text="Material" />
                         </Column>
-                        <Column>
+                        <Column width="30rem">
                             <Text text="Material Description" />
                         </Column>
-                        <Column >
+                        <Column width="8rem">
                             <Text text="Quantity" />
                         </Column>
-                        <Column>
+                        <Column width="8rem">
                             <Text text="Unit" />
                         </Column>
                         <Column>
@@ -158,7 +157,7 @@
                             <cells>
                                 <Text text="{Itemno}"/>
                                 <Input value="{Product}" showValueHelp="true" valueHelpOnly="true" valueHelpRequest="materialValueHelp"/>
-                                <Input value="{ProductDescription}"/>
+                                <Input value="{ProductDescription}" maxLength="40"/>
                                 <Input value="{AvailableQuantity}" liveChange="onChangeAmount" />
                                 <Input value="{BaseUnit}" />
                                 <Button icon="sap-icon://delete" press="onDeleteReceiptAsItIsItem" visible="{= ${Itemno} !== '10' }"></Button>

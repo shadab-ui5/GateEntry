@@ -90,15 +90,15 @@
                             <Input id="idRAII_Amount" type="Number" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Number" required="true"/>
+                            <Label text="Vehicle Number" required="true"/>
                             <Input id="idRAII_VehicalNo" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Type" required="true"/>
+                            <Label text="Vehicle Type" required="true"/>
                             <Input id="idRAII_VehicalType" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%">
-                            <Label text="Vehical Capacity" required="true"/>
+                            <Label text="Vehicle Capacity" required="true"/>
                             <Input id="idRAII_VehicalCapacity" type="Number" maxLength="10" width="75%"/>
                         </VBox>
                         <VBox width="20%" visible="false">
