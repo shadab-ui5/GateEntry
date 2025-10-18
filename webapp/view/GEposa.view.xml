@@ -140,6 +140,9 @@
                         <Column>
                             <Text text="Action" />
                         </Column>
+                        <Column visible="false">
+                            
+                        </Column>
                     </columns>
                     <items>
                         <ColumnListItem>
@@ -149,9 +152,10 @@
                                 <Text text="{PurchaseOrderItemText}" />
                                 <Text text="{PurchaseOrderItem}"/>
                                 <!-- <Input value="{AvailableQuantity}" liveChange="onChangeRAPOItemQuantity" type="Tel" /> -->
-                                <Input id="idInpRAPOItemQuantity" value="{EnteredQuantity}" change="onChangeRAPOItemQuantity" type="Number" enabled="{isMaterialSelected}" />
+                                <Input id="idInpRAPOItemQuantity" value="{EnteredQuantity}" change="onChangeRAPOItemQuantity"  enabled="{isMaterialSelected}" />
                                 <Text text="{Unit}" />
                                 <Button icon="sap-icon://delete" press="onDeleteReceiptAsPoItem" visible="{isDeletable}"></Button>
+                                <Text text="{Material2}" />
                             </cells>
                         </ColumnListItem>
                     </items>

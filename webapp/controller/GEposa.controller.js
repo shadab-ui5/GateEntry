@@ -691,6 +691,7 @@ sap.ui.define([
                     Quantity: "",
                     Unit: "",
                     Plant: "",
+                    Material2: "",
                     postedquantity: "",
                     final_qty: "",
                     EnteredQuantity: "",
@@ -708,6 +709,7 @@ sap.ui.define([
                     Quantity: "",
                     Unit: "",
                     Plant: "",
+                    Material2: "",
                     postedquantity: "",
                     final_qty: "",
                     EnteredQuantity: "",
@@ -767,6 +769,7 @@ sap.ui.define([
                             else {
                                 selectedInput.setValue(selectedValue[0].Material);
                                 selectedInput.getBindingContext().getObject().PurchaseOrderItemText = selectedValue[0].PurchaseOrderItemText;
+                                selectedInput.getBindingContext().getObject().Material2 = selectedValue[0].Material2;
                                 selectedInput.getBindingContext().getObject().isMaterialSelected = true; //enable Item Quantity Input
                                 that.setSelectedMaterialDataToPOTable(selectedValue[0].Material, selectedInput);
                             }
@@ -1972,6 +1975,27 @@ sap.ui.define([
                 that.calculateMaxAmoutValue_RAPO();
             }, 200);
         },
+        // allowOnlyDigits: function (oEvent) {
+        //     const oInput = oEvent.getSource();
+        //     let sValue = oInput.getValue();
+
+        //     // Remove invalid characters (allow only digits and '.')
+        //     sValue = sValue.replace(/[^0-9.]/g, '');
+
+        //     // Allow only one decimal point
+        //     const parts = sValue.split('.');
+        //     if (parts.length > 2) {
+        //         sValue = parts[0] + '.' + parts[1];
+        //     }
+
+        //     // Restrict to two digits after decimal
+        //     if (parts[1]?.length > 2) {
+        //         sValue = parts[0] + '.' + parts[1].substring(0, 2);
+        //     }
+
+        //     oInput.setValue(sValue);
+        //     this.onChangeRAPOItemQuantity(oEvent);
+        // }
 
 
     });
