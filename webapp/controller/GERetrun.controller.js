@@ -16,6 +16,7 @@ sap.ui.define([
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.gateapps.model.qrCode");
     jQuery.sap.require("hodek.gateapps.model.jspdf");
+    jQuery.sap.require("hodek.gateapps.model.JsBarcode");
     //END
 
     //jQuery.sap.require("hodek.gateapps.model.qrcodeNew");
@@ -105,7 +106,7 @@ sap.ui.define([
                 filters: [
                     new sap.ui.model.Filter("InvoiceNo", sap.ui.model.FilterOperator.EQ, sValue),
                     new sap.ui.model.Filter("Vendor", sap.ui.model.FilterOperator.EQ, selectedVendor),
-                  
+
                 ],
                 and: true
             });
@@ -847,8 +848,8 @@ sap.ui.define([
                                 return oContext.getObject();
                             });
                             selectedInput.setValue(selectedValue[0].Supplier);
-                            that.Vendorname=selectedValue[0].SupplierName;
-                            that.Vendorcode=selectedValue[0].Supplier;
+                            that.Vendorname = selectedValue[0].SupplierName;
+                            that.Vendorcode = selectedValue[0].Supplier;
                             that.vendorValue = `${selectedValue[0].SupplierName}(${selectedValue[0].Supplier})`
                             // that.getView().byId("idRAII_DocInvNo").setValue(); //clear Invoice number on selecting vendor
                         }
@@ -1112,10 +1113,10 @@ sap.ui.define([
                 TransporterCode = oView.byId("idRAII_TrasporterCode").getValue(),
                 Vendor = that.Vendorcode,
                 Ewayno = oView.byId("idRAII_EwayNo").getValue(),
-                EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue())||null,
+                EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()) || null,
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
-            if ( (!InvoiceDate) || Amount === "" || Vehicleno === "" || Transporter === "") {
+            if ((!InvoiceDate) || Amount === "" || Vehicleno === "" || Transporter === "") {
                 MessageToast.show("Fill all mandatory fields");
                 return;
             }
@@ -1136,7 +1137,7 @@ sap.ui.define([
                     "Materialdesc": item.ProductDescription,
                     "Quantity": "0.00",
                     "Postedquantity": parseFloat(item.AvailableQuantity).toFixed(2),
-                    "Uom":item.BaseUnit
+                    "Uom": item.BaseUnit
                 };
 
 
@@ -1171,7 +1172,7 @@ sap.ui.define([
                 "Transportelcode": TransporterCode,
                 "Zchalan": Challanno,
                 "Vendor": Vendor,
-                "Vendorname":that.Vendorname,
+                "Vendorname": that.Vendorname,
                 "Ewayno": Ewayno,
                 "EwaybillDate": EwaybillDate,
                 "Amount": parseFloat(Amount).toFixed(2),
@@ -1256,18 +1257,31 @@ sap.ui.define([
             oQRCodeBox.addItem(oHtmlComp);
 
             setTimeout(function () {
-                let sQRCodeNumber = qrData.AsnNo; // Data to encode in QR Code
-                // Generate QR Code using qrcode.js
-                QRCode.toCanvas(document.getElementById('qrCanvas'), sQRCodeNumber, function (error) {
-                    if (error) {
-                        sap.m.MessageToast.show("QR Code generation failed!");
-                        return;
-                    }
-                    sap.m.MessageToast.show("QR Code generated!");
-                    // After generating the QR Code, create PDF
+                try {
+                    let sBarcodeData = qrData.AsnNo; // The value to encode in the barcode
+                    let oCanvas = document.getElementById("qrCanvas");
+
+                    // Generate barcode using JsBarcode
+                    JsBarcode(oCanvas, sBarcodeData, {
+                        format: "CODE128",   // Common & widely supported format
+                        displayValue: false,  // Show the text below the barcode
+                        fontSize: 14,
+                        lineColor: "#000",
+                        width: 2,
+                        height: 10,
+                        margin: 10
+                    });
+
+                    sap.m.MessageToast.show("Barcode generated!");
+
+                    // After generating the barcode, create PDF
                     that._generatePDF(qrData);
                     oQRCodeBox.setVisible(false);
-                }.bind(this));
+
+                } catch (error) {
+                    console.error(error);
+                    sap.m.MessageToast.show("Barcode generation failed!");
+                }
             }, 200);
         },
 
@@ -1288,22 +1302,22 @@ sap.ui.define([
             doc.setFont("Helvetica", 'bold');
             doc.setFontSize(4.5);
             doc.setTextColor('#000');
-
-            doc.text(2, 5, `ASN Number: ${qrData.AsnNo}`);
-            doc.text(2, 9, `Gate Entry Number: IN${qrData.AsnNo}`);
-            // doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
-            doc.text(2, 13, `Inv Date: ${formattedInvDate}`);
-
             // Get the canvas element for the QR code
             var canvas = document.getElementById('qrCanvas');
             var imgData = canvas.toDataURL('image/png');
 
             // Add the QR code image to the PDF
-            doc.addImage(imgData, 'PNG', 35, 1, 15, 15); // Adjust size and position as necessary
+            doc.addImage(imgData, 'PNG', 15, 1, 20, 12); // Adjust size and position as necessary
+            doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
+            doc.text(2, 14, `Gate Entry Number: IN${qrData.AsnNo}`);
+            // doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
+            doc.text(2, 16, `Inv Date: ${formattedInvDate}`);
+
+
             // doc.text(2, 21, `Vendor: ${this.vendorValue}`);
             let vendorText = `Vendor: ${this.vendorValue}`;
-            let wrappedVendor = doc.splitTextToSize(vendorText, 40);
-            doc.text(wrappedVendor, 2, 21, { maxWidth: 40, lineHeightFactor: 1.2 });
+            let wrappedVendor = doc.splitTextToSize(vendorText, 42);
+            doc.text(wrappedVendor, 2, 18, { maxWidth: 42, lineHeightFactor: 1.2 });
 
             // Save the PDF to a file
             doc.save(`Gate_Entry_IN${qrData.AsnNo}.pdf`);
