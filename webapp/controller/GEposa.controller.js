@@ -1667,16 +1667,16 @@ sap.ui.define([
 
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
-            doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
-            doc.text(2, 14, `Gate Entry Number: IN${qrData.AsnNo}`);
-            doc.text(2, 16, `Inv No: ${qrData.InvoiceNo}`);
+            doc.text(2, 12, `ASN Number: ${qrData.AsnNo} |`);
+            doc.text(2, 12, `Gate Entry No: IN${qrData.AsnNo}`);
+            doc.text(2, 15, `Inv No: ${qrData.InvoiceNo}`);
             doc.text(2, 18, `Inv Date: ${formattedInvDate}`);
 
 
             // doc.text(2, 21, `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`);
             let vendorText = `Vendor: ${this.selectedPOSchAggrVendorName} ( ${this.selectedPOSchAggrVendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 42);
-            doc.text(wrappedVendor, 2, 20, { maxWidth: 42, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 42, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },

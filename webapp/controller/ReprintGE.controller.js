@@ -299,14 +299,14 @@ sap.ui.define([
             var imgData = canvas.toDataURL('image/png');
 
             doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
-            doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
-            doc.text(2, 14, `Gate Entry Number: IN${qrData.AsnNo}`);
-            doc.text(2, 16, `Invoice Number: ${qrData.InvoiceNo}`);
+            doc.text(2, 12, `ASN Number: ${qrData.AsnNo} |`);
+            doc.text(23, 12, `Gate Entry No: IN${qrData.AsnNo}`);
+            doc.text(2, 15, `Invoice Number: ${qrData.InvoiceNo}`);
             doc.text(2, 18, `Invoice Date: ${formattedInvDate}`);
             // doc.text(2, 21, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`;
             let wrappedVendor = doc.splitTextToSize(vendorText, 42);
-            doc.text(wrappedVendor, 2, 20, { maxWidth: 42, lineHeightFactor: 1.2 });
+            doc.text(wrappedVendor, 2, 21, { maxWidth: 42, lineHeightFactor: 1.2 });
             // Save the PDF to a file
             doc.save(`Gate_Entry_${qrData.AsnNo}.pdf`);
         },
