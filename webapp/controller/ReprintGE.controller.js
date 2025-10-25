@@ -261,7 +261,7 @@ sap.ui.define([
                         fontSize: 14,
                         lineColor: "#000",
                         width: 2,
-                        height: 10,
+                        height: 50,
                         margin: 10
                     });
 
@@ -298,10 +298,10 @@ sap.ui.define([
             var canvas = document.getElementById('qrCanvas');
             var imgData = canvas.toDataURL('image/png');
 
-            doc.addImage(imgData, 'PNG', 15, 1, 20, 12); // Adjust size and position as necessary
+            doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
             doc.text(2, 12, `ASN Number: ${qrData.AsnNo}`);
             doc.text(2, 14, `Gate Entry Number: IN${qrData.AsnNo}`);
-            doc.text(2, 16, `Invoice Number : ${qrData.InvoiceNo}`);
+            doc.text(2, 16, `Invoice Number: ${qrData.InvoiceNo}`);
             doc.text(2, 18, `Invoice Date: ${formattedInvDate}`);
             // doc.text(2, 21, `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`);
             let vendorText = `Supplier: ${qrData.SupplierName} ( ${qrData.Vendor} )`;
