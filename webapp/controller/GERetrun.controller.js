@@ -1309,7 +1309,7 @@ sap.ui.define([
             // Add the QR code image to the PDF
             doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
             doc.text(2, 12, `ASN Number: ${qrData.AsnNo} |`);
-            doc.text(2, 12, `Gate Entry No: IN${qrData.AsnNo}`);
+            doc.text(23, 12, `Gate Entry No: IN${qrData.AsnNo}`);
             // doc.text(2, 13, `Inv No.: ${qrData.InvoiceNo}`);
             doc.text(2, 15, `Inv Date: ${formattedInvDate}`);
 
