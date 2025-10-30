@@ -41,6 +41,7 @@ sap.ui.define([
 
         _onRouteMatched: function (oEvent) {
             const oTable = this.byId("idAsnTableCancel");
+            this.iSkip = 0;
             // oTable.setBusy(true);
             this.oBusyDialog.setText("Loading Data..");
             this.oBusyDialog.open()
@@ -289,7 +290,8 @@ sap.ui.define([
             // Set model data
             let oDialogModel = new sap.ui.model.json.JSONModel({
                 SelectedASN: sAsnNumber,
-                Remark: ""
+                Remark: "",
+                Sourceappvp:oSelectedData.Sourceappvp,
             });
             this.getView().setModel(oDialogModel);
 
@@ -321,7 +323,7 @@ sap.ui.define([
                         this.pRemarkDialog.setBusy(true);
 
                         // Call your backend method
-                        Models.updateAsnStatus(this, oData.SelectedASN, oData.Remark, this.pRemarkDialog);
+                        Models.updateAsnStatus(this, oData.SelectedASN, oData.Remark,oData.Sourceappvp,this.pRemarkDialog);
 
                         this.pRemarkDialog.close();
                     }

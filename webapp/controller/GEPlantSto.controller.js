@@ -1111,7 +1111,7 @@ sap.ui.define([
                 TransporterCode = oView.byId("idRAII_TrasporterCode").getValue(),
                 Vendor = that.Vendorcode,
                 Ewayno = oView.byId("idRAII_EwayNo").getValue(),
-                EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue()),
+                EwaybillDate = oDateFormat.format(oView.byId("idRAII_EwayDate").getDateValue())||null,
                 Amount = oView.byId("idRAII_Amount").getValue(),
                 Vehicleno = oView.byId("idRAII_VehicalNo").getValue();
             if (InvoiceNo === "" || (!InvoiceDate) || Amount === "" || Vehicleno === "" || Transporter === "") {

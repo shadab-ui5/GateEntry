@@ -209,16 +209,24 @@ sap.ui.define([
                     });
                 })
             },
-            updateAsnStatus: function (_this, sAsnNo, Remark, oDialog) {
+            updateAsnStatus: function (_this, sAsnNo, Remark, Sourceappvp, oDialog) {
                 let oModel = _this.getOwnerComponent().getModel("vendorModel"); // Your OData model
 
                 // Build the path to the entity — make sure ASN is zero-padded exactly as backend expects
                 let sPath = `/InwardGateHeader('${sAsnNo}')`;
+                let oPayload;
+                if (Sourceappvp !== "X") {
+                    oPayload = {
+                        Status: "02", // Field to update
+                        Remarks: Remark
+                    };
+                } else {
+                    oPayload = {
+                        Status: "01", // Field to update
+                        Remarks: Remark
+                    };
+                }
 
-                let oPayload = {
-                    Status: "01", // Field to update
-                    Remarks: Remark
-                };
 
                 oModel.update(sPath, oPayload, {
                     success: function () {

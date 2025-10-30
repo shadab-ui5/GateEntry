@@ -41,6 +41,7 @@ sap.ui.define([
 
         _onRouteMatched: function (oEvent) {
             const oTable = this.byId("idAsnTableCancel");
+            this.iSkip = 0;
             // oTable.setBusy(true);
             this.oBusyDialog.setText("Loading Data..");
             this.oBusyDialog.open()
