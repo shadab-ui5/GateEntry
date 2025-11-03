@@ -26,7 +26,7 @@ sap.ui.define([
             this.iSkip = 0;
             this.iTop = 200; // Page size
             this.sQuery = ""; // Store current search query
-
+            Models._loadPlants(this);
             // Initialize models
             const oAsnModelVh = new sap.ui.model.json.JSONModel();
             const oSupplierVHModel = new sap.ui.model.json.JSONModel([]);
@@ -111,6 +111,7 @@ sap.ui.define([
             this.iTop = 200; // page size
             this.sQuery = "onFilterGo";
             this.getOwnerComponent().getModel("AsnHeaderModel").setProperty("/AsnData", "");
+            this.oBusyDialog.open();
             this.loadPurchaseOrderFilter();
 
         },
@@ -291,7 +292,7 @@ sap.ui.define([
             let oDialogModel = new sap.ui.model.json.JSONModel({
                 SelectedASN: sAsnNumber,
                 Remark: "",
-                Sourceappvp:oSelectedData.Sourceappvp,
+                Sourceappvp: oSelectedData.Sourceappvp,
             });
             this.getView().setModel(oDialogModel);
 
@@ -323,7 +324,7 @@ sap.ui.define([
                         this.pRemarkDialog.setBusy(true);
 
                         // Call your backend method
-                        Models.updateAsnStatus(this, oData.SelectedASN, oData.Remark,oData.Sourceappvp,this.pRemarkDialog);
+                        Models.updateAsnStatus(this, oData.SelectedASN, oData.Remark, oData.Sourceappvp, this.pRemarkDialog);
 
                         this.pRemarkDialog.close();
                     }

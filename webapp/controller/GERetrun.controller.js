@@ -1127,9 +1127,7 @@ sap.ui.define([
                 if (item.ProductDescription === "") {
                     isMaterialSelected = false;
                 }
-                // if (item.AvailableQuantity === "") {
-                //     isQuantityEntered = false;
-                // }
+
                 let obj = {
                     "Ponumber": "",
                     "LineItem": item.Itemno,
@@ -1147,10 +1145,12 @@ sap.ui.define([
                 MessageToast.show("Select Material");
                 return;
             }
-            // if (!isQuantityEntered) {
-            //     MessageToast.show("Enter Item Quantity");
-            //     return;
-            // }
+            const hasZeroPostedQty = itemData.some(obj => parseFloat(obj.Postedquantity) === 0);
+
+            if (hasZeroPostedQty) {
+                MessageToast.show("Quantity cannot be zero");
+                return;
+            }
 
 
 

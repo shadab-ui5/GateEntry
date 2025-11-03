@@ -15,6 +15,16 @@
                         <SearchField id="searchField" width="90%" class="" placeholder="Search..." search=".onAsnSearch" />
                     </fb:control>
                 </fb:FilterGroupItem>
+                <fb:FilterGroupItem id="_IDGenFilterGroupItem111" name="plant" label="Plant" groupName="Group1" visibleInFilterBar="true">
+                    <fb:control>
+                        <ComboBox id="idDropdownPlant" selectedKey="" width="75%" selectionChange="onSelectPlant" items="{
+					    path: '/',
+                        sorter: { path: 'Plant' }
+                         }">
+                            <core:Item key="{Plant}" text="{Plant} - {Plantname}"/>
+                        </ComboBox>
+                    </fb:control>
+                </fb:FilterGroupItem>
                 <fb:FilterGroupItem id="_IDGenFilterGroupItem15" name="asn" label="ASN No" groupName="Group1" visibleInFilterBar="true">
                     <fb:control>
                         <Input id="asnField" width="90%" class="" placeholder="ASN..." />

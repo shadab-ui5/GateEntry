@@ -230,6 +230,24 @@ sap.ui.define([
                     filters: [filter],
                     urlParameters: that.oParameters,
                     success: function (oResponse) {
+                        // let grouped = {};
+                        // let filteredResults = [];
+
+                        // // ✅ Single-pass processing
+                        // oResponse.results.forEach(item => {
+                        //     const key = item.PurchaseOrder + "-" + item.PurchaseOrderItem;
+
+                        //     if (!grouped[key]) {
+                        //         // Clone representative item
+                        //         grouped[key] = { ...item, totalPostedQuantity: 0 };
+                        //         filteredResults.push(grouped[key]); // Keep reference in results
+                        //     }
+                        //     // Accumulate postedquantity ONLY if not status 02
+                        //     if (item.status !== "02") {
+                        //         grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                        //     }
+                        // });
+                        // that.aPurchaseOrdersData = filteredResults;
                         that.aPurchaseOrdersData = oResponse.results;
                         const key = 'PurchaseOrder';
                         that.aUniquePurchaseOrders = [...new Map(oResponse.results.map(item =>
@@ -264,6 +282,28 @@ sap.ui.define([
                     filters: [filter],
                     urlParameters: that.oParameters,
                     success: function (oResponse) {
+                        // let grouped = {};
+                        // let filteredResults = [];
+
+                        // // ✅ Single-pass processing
+                        // oResponse.results.forEach(item => {
+
+
+                        //     const key = item.SchedulingAgreement + "-" + item.SchedulingAgreementItem;
+
+                        //     if (!grouped[key]) {
+                        //         // Clone representative item
+                        //         grouped[key] = { ...item, totalPostedQuantity: 0 };
+                        //         filteredResults.push(grouped[key]); // Keep reference in results
+                        //     }
+
+                        //     // Accumulate postedquantity ONLY if not status 02
+                        //     if (item.status !== "02") {
+                        //         grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
+                        //     }
+
+                        // });
+                        // that.aSchAggrementData = filteredResults;
                         that.aSchAggrementData = oResponse.results;
                         const key = 'SchedulingAgreement';
                         that.aUniqueSchAggrements = [...new Map(oResponse.results.map(item =>
@@ -874,7 +914,10 @@ sap.ui.define([
                 let uniqueRecord = {};
                 groupedData[item].forEach(obj => {
                     uniqueRecord = obj;
-                    totalPostedQty = totalPostedQty + parseFloat(obj.postedquantity);
+                    if (obj.status !== "02") { // ✅ Skip if status is "02"
+                        totalPostedQty += parseFloat(obj.postedquantity) || 0;
+                    }
+                    // totalPostedQty = totalPostedQty + parseFloat(obj.postedquantity);
                 });
                 uniqueRecord.postedquantity = totalPostedQty;
                 uniqueRecord.AvailableQuantity = parseFloat(uniqueRecord.Quantity) - totalPostedQty;
@@ -1501,7 +1544,12 @@ sap.ui.define([
                 return;
             }
 
+            const hasZeroPostedQty = itemData.some(obj => parseFloat(obj.Postedquantity) === 0);
 
+            if (hasZeroPostedQty) {
+                MessageToast.show("Quantity cannot be zero");
+                return;
+            }
 
             let payload = {
                 "AsnNo": "",

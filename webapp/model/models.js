@@ -63,7 +63,8 @@ sap.ui.define([
                     aFilters.push(new sap.ui.model.Filter("Status", sap.ui.model.FilterOperator.EQ, '03'));
                     if (sQuery === "onFilterGo") {
                         // Get field values from the view
-                        let asnFieldValue = _this.byId("asnField").getValue();
+                        let asnFieldValue = _this.byId("asnField").getValue(); 
+                        let plantValue = _this.byId("idDropdownPlant").getSelectedKey(); 
                         let geFieldValue = _this.byId("geField").getValue();
                         let invoiceFieldValue = _this.byId("invoiceField").getValue();
                         let oDateRange = _this.byId("idprintPurchDate").getDateValue();
@@ -79,6 +80,10 @@ sap.ui.define([
                         // Add Invoice No filter if value is provided
                         if (invoiceFieldValue) {
                             aFilters.push(new sap.ui.model.Filter("InvoiceNo", "Contains", invoiceFieldValue));
+                        }
+                        // Add Invoice No filter if value is provided
+                        if (plantValue) {
+                            aFilters.push(new sap.ui.model.Filter("Plant", "Contains", plantValue));
                         }
                         // Add Invoice Date range filter if both dates are selected
                         if (oDateRange && oDateRangeTo) {
@@ -147,6 +152,7 @@ sap.ui.define([
                         // Get field values from the view
                         let asnFieldValue = _this.byId("asnField").getValue();
                         let geFieldValue = _this.byId("geField").getValue();
+                         let plantValue = _this.byId("idDropdownPlant").getSelectedKey(); 
                         let invoiceFieldValue = _this.byId("invoiceField").getValue();
                         let oDateRange = _this.byId("idprintPurchDate").getDateValue();
                         let oDateRangeTo = _this.byId("idprintPurchDate").getSecondDateValue();
@@ -161,6 +167,11 @@ sap.ui.define([
                         // Add Invoice No filter if value is provided
                         if (invoiceFieldValue) {
                             aFilters.push(new sap.ui.model.Filter("InvoiceNo", "Contains", invoiceFieldValue));
+                        }
+
+                         // Add Invoice No filter if value is provided
+                        if (plantValue) {
+                            aFilters.push(new sap.ui.model.Filter("Plant", "Contains", plantValue));
                         }
                         // Add Invoice Date range filter if both dates are selected
                         if (oDateRange && oDateRangeTo) {

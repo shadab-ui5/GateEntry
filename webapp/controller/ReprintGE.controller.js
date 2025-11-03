@@ -11,7 +11,7 @@ sap.ui.define([
     //QR & PDF in use libraries //
     jQuery.sap.require("hodek.gateapps.model.qrCode");
     jQuery.sap.require("hodek.gateapps.model.jspdf");
-     jQuery.sap.require("hodek.gateapps.model.JsBarcode");
+    jQuery.sap.require("hodek.gateapps.model.JsBarcode");
     return Controller.extend("hodek.gateapps.controller.ReprintGE", {
         onInit: function () {
             const oRouter = this.getOwnerComponent().getRouter();
@@ -26,7 +26,7 @@ sap.ui.define([
             this.iSkip = 0;
             this.iTop = 200; // Page size
             this.sQuery = ""; // Store current search query
-
+            Models._loadPlants(this);
             // Initialize models
             const oAsnModelVh = new sap.ui.model.json.JSONModel();
             const oSupplierVHModel = new sap.ui.model.json.JSONModel([]);
@@ -85,9 +85,6 @@ sap.ui.define([
                     let oAsnModel = _this.getOwnerComponent().getModel("AsnHeaderModel");
                     let aExisting = oAsnModel.setProperty("/AsnData", aResults) || [];
 
-                    // Append instead of overwrite
-                    // oAsnModel.setProperty("/AsnData", aExisting.concat(aResults));
-
                     // Update skip for next load
                     _this.iSkip += aResults.length;
                     _this.oBusyDialog.close();
@@ -109,6 +106,7 @@ sap.ui.define([
             this.iTop = 200; // page size
             this.sQuery = "onFilterGo";
             this.getOwnerComponent().getModel("AsnHeaderModel").setProperty("/AsnData", "");
+            this.oBusyDialog.open();
             this.loadPurchaseOrderFilter();
 
         },
