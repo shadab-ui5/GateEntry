@@ -198,7 +198,7 @@ sap.ui.define([
                         displayValue: false,  // Show the text below the barcode
                         fontSize: 14,
                         lineColor: "#000",
-                        width: 2,
+                        width: 3,
                         height: 50,
                         margin: 10
                     });
@@ -230,7 +230,7 @@ sap.ui.define([
             var canvas = document.getElementById('qrCanvas');
             var imgData = canvas.toDataURL('image/png');
             // Add the QR code image to the PDF
-            doc.addImage(imgData, 'PNG', 15, 1, 20, 10); // Adjust size and position as necessary
+            doc.addImage(imgData, 'PNG', 5, 1, 35, 10);// Adjust size and position as necessary
             doc.text(2, 12, `ASN Number: ${qrData.AsnNo} |`);
             doc.text(23, 12, `Gate Entry No: IN${qrData.AsnNo}`);
             doc.text(2, 15, `Invoice Number: ${qrData.InvoiceNo}`);
