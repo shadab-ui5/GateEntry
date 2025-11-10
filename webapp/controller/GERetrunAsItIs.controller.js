@@ -1280,7 +1280,7 @@ sap.ui.define([
                         displayValue: false,  // Show the text below the barcode
                         fontSize: 14,
                         lineColor: "#000",
-                        width: 3,
+                        width: 2,
                         height: 50,
                         margin: 10
                     });
