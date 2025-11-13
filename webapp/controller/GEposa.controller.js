@@ -65,6 +65,19 @@ sap.ui.define([
             this.f4HelpModel = this.getOwnerComponent().getModel("vendorModel");
             this.inGateEntryModel = this.getOwnerComponent().getModel("vendorModel");
             Models._loadPlants(this);
+            that.aSupplierList = [];
+
+            Models.getSupplierList(this)
+                .then(oData => {
+                    if (oData && oData.results && oData.results.length) {
+                        // ✅ Extract only supplier names or IDs (replace 'Supplier' with actual field name)
+                        that.aSupplierList = oData.results.map(item => item.Supplier);
+
+                        // ✅ Make the list unique
+                        that.aSupplierList = [...new Set(that.aSupplierList)];
+                    }
+                })
+                .catch(oError => console.error("Failed to load supplier list:", oError));
             // that.getPlantData();
             oRouter.getRoute("RouteGEWasn").attachPatternMatched(this._onRouteMatched, this);
         },
@@ -230,24 +243,6 @@ sap.ui.define([
                     filters: [filter],
                     urlParameters: that.oParameters,
                     success: function (oResponse) {
-                        // let grouped = {};
-                        // let filteredResults = [];
-
-                        // // ✅ Single-pass processing
-                        // oResponse.results.forEach(item => {
-                        //     const key = item.PurchaseOrder + "-" + item.PurchaseOrderItem;
-
-                        //     if (!grouped[key]) {
-                        //         // Clone representative item
-                        //         grouped[key] = { ...item, totalPostedQuantity: 0 };
-                        //         filteredResults.push(grouped[key]); // Keep reference in results
-                        //     }
-                        //     // Accumulate postedquantity ONLY if not status 02
-                        //     if (item.status !== "02") {
-                        //         grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
-                        //     }
-                        // });
-                        // that.aPurchaseOrdersData = filteredResults;
                         that.aPurchaseOrdersData = oResponse.results;
                         const key = 'PurchaseOrder';
                         that.aUniquePurchaseOrders = [...new Map(oResponse.results.map(item =>
@@ -282,28 +277,6 @@ sap.ui.define([
                     filters: [filter],
                     urlParameters: that.oParameters,
                     success: function (oResponse) {
-                        // let grouped = {};
-                        // let filteredResults = [];
-
-                        // // ✅ Single-pass processing
-                        // oResponse.results.forEach(item => {
-
-
-                        //     const key = item.SchedulingAgreement + "-" + item.SchedulingAgreementItem;
-
-                        //     if (!grouped[key]) {
-                        //         // Clone representative item
-                        //         grouped[key] = { ...item, totalPostedQuantity: 0 };
-                        //         filteredResults.push(grouped[key]); // Keep reference in results
-                        //     }
-
-                        //     // Accumulate postedquantity ONLY if not status 02
-                        //     if (item.status !== "02") {
-                        //         grouped[key].totalPostedQuantity += parseFloat(item.postedquantity || 0);
-                        //     }
-
-                        // });
-                        // that.aSchAggrementData = filteredResults;
                         that.aSchAggrementData = oResponse.results;
                         const key = 'SchedulingAgreement';
                         that.aUniqueSchAggrements = [...new Map(oResponse.results.map(item =>
@@ -689,6 +662,12 @@ sap.ui.define([
                 this.selectedPOSchAggrVendor = selectedItem.Supplier; // get the selected scheduling Aggrement vendor
                 this.selectedPOSchAggrVendorName = selectedItem.SupplierName; // get the selected scheduling Aggrement vendor
             }
+
+            if (this.aSupplierList.includes(this.selectedPOSchAggrVendor)) {
+               MessageBox.warning("Gate Entry will be created through ASN");
+               return;
+            }
+
             // Set the selected value in the input field
             var oInput = this.byId("idRAPO_PO_Order");
             oInput.setValue(selectedValue);
@@ -1673,7 +1652,7 @@ sap.ui.define([
                         displayValue: false,  // Show the text below the barcode
                         fontSize: 14,
                         lineColor: "#000",
-                        width: 2,
+                        width: 1,
                         height: 50,
                         margin: 10
                     });

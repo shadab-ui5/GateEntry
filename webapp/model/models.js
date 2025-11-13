@@ -45,6 +45,23 @@ sap.ui.define([
                 })
 
             },
+            getSupplierList: function (_this) {
+                return new Promise((resolve, reject) => {
+                    const oModel = _this.getOwnerComponent().getModel("vendorModel"); // assuming default model
+
+                    oModel.read("/supplierListByUser", {
+                        success: function (oData) {
+                            console.log("Fetched supplier list:", oData.results);
+                            resolve(oData);
+                        },
+                        error: function (oError) {
+                            console.error("Error fetching supplier list", oError);
+                            reject(oError)
+                        }
+                    });
+                })
+
+            },
             _loadAsn: function (_this, sQuery, iSkip, iTop) {
                 return new Promise((resolve, reject) => {
                     let oStartDateFormat = DateFormat.getInstance({
