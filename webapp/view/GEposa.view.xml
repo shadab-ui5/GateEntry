@@ -137,6 +137,9 @@
                         <Column>
                             <Text text="Unit" />
                         </Column>
+                        <Column visible="false">
+                            <Text text="Net Price" />
+                        </Column>
                         <Column>
                             <Text text="Action" />
                         </Column>
@@ -154,6 +157,7 @@
                                 <!-- <Input value="{AvailableQuantity}" liveChange="onChangeRAPOItemQuantity" type="Tel" /> -->
                                 <Input id="idInpRAPOItemQuantity" value="{EnteredQuantity}" change="onChangeRAPOItemQuantity"  enabled="{isMaterialSelected}" />
                                 <Text text="{Unit}" />
+                                <Text text="{NetPrice}" />
                                 <Button icon="sap-icon://delete" press="onDeleteReceiptAsPoItem" visible="{isDeletable}"></Button>
                                 <Text text="{Material2}" />
                             </cells>

@@ -55,7 +55,7 @@
                 <OverflowToolbar id="_IDGenOverflowToolbar1">
                     <Title id="_IDGenTitle3" text="Gate Entry Details" level="H2"/>
                     <ToolbarSpacer id="_IDGenToolbarSpacer"/>
-                    <Button id="idActionReprint" tooltip="Cancel" type="Emphasized" text="Cancel Asn" icon="sap-icon://cancel" press="handleCancel" enabled="false"/>
+                    <Button id="idActionReprint" tooltip="Cancel" type="Emphasized" text="Cancel Gate Entry" icon="sap-icon://cancel" press="handleCancel" enabled="false"/>
                 </OverflowToolbar>
             </headerToolbar>
             <infoToolbar>

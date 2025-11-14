@@ -664,8 +664,8 @@ sap.ui.define([
             }
 
             if (this.aSupplierList.includes(this.selectedPOSchAggrVendor)) {
-               MessageBox.warning("Gate Entry will be created through ASN");
-               return;
+                MessageBox.warning("Gate Entry will be created through ASN");
+                return;
             }
 
             // Set the selected value in the input field
@@ -790,6 +790,7 @@ sap.ui.define([
                                 selectedInput.setValue(selectedValue[0].Material);
                                 selectedInput.getBindingContext().getObject().PurchaseOrderItemText = selectedValue[0].PurchaseOrderItemText;
                                 selectedInput.getBindingContext().getObject().Material2 = selectedValue[0].Material2;
+                                selectedInput.getBindingContext().getObject().NetPrice = selectedValue[0].NetAmount;
                                 selectedInput.getBindingContext().getObject().isMaterialSelected = true; //enable Item Quantity Input
                                 that.setSelectedMaterialDataToPOTable(selectedValue[0].Material, selectedInput);
                             }
@@ -828,6 +829,7 @@ sap.ui.define([
                         if (item.SchedulingAgreement === selectedPurchaseOrder && aUniqueMaterial.indexOf(item.Material) === -1) {
                             aUniqueMaterial.push(item.Material);
                             item.PurchaseOrderItemText = item.PurchasingDocumentItemText;
+                            item.NetPrice=item.NetPriceAmount
                             aUniqueMaterialItemList.push(item);
                         }
                     });
