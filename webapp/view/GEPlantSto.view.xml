@@ -62,7 +62,7 @@
                     <HBox class="sapUiTinyMarginTop">
                         <VBox width="20%">
                             <Label text="Invoice Number" required="true"/>
-                            <Input id="idRAII_DocInvNo" value="" change="onChangeRAII_DocInvNo" maxLength="16" width="75%"/>
+                            <Input id="idRAII_DocInvNo" value="" change="onChangeRAII_DocInvNo" maxLength="16" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="Invoice Date" required="true"/>
@@ -91,7 +91,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Vehicle Number" required="true"/>
-                            <Input id="idRAII_VehicalNo" maxLength="10" width="75%"/>
+                            <Input id="idRAII_VehicalNo" maxLength="10" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="Vehicle Type" required="true"/>

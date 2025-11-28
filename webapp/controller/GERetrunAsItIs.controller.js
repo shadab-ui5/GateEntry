@@ -1146,7 +1146,7 @@ sap.ui.define([
                 MessageToast.show("Select Material");
                 return;
             }
-            
+
             const hasZeroPostedQty = itemData.some(obj => parseFloat(obj.Postedquantity) === 0);
 
             if (hasZeroPostedQty) {
@@ -1377,7 +1377,13 @@ sap.ui.define([
                 that.calculateMaxAmoutValue_RAPO();
             }, 200);
         },
+        convertToCaps: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const value = oInput.getValue();
 
+            // Convert to uppercase
+            oInput.setValue(value.toUpperCase());
+        }
 
 
 

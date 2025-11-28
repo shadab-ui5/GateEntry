@@ -664,7 +664,7 @@ sap.ui.define([
             }
 
             if (this.aSupplierList.includes(this.selectedPOSchAggrVendor)) {
-                MessageBox.warning("Gate Entry will be created through ASN");
+                MessageBox.warning("Scan ASN to create Gate Entry,Supplier is using Vendor Portal");
                 return;
             }
 
@@ -2032,6 +2032,13 @@ sap.ui.define([
                 that.calculateMaxAmoutValue_RAPO();
             }, 200);
         },
+         convertToCaps: function (oEvent) {
+            const oInput = oEvent.getSource();
+            const value = oInput.getValue();
+
+            // Convert to uppercase
+            oInput.setValue(value.toUpperCase());
+        }
         // allowOnlyDigits: function (oEvent) {
         //     const oInput = oEvent.getSource();
         //     let sValue = oInput.getValue();

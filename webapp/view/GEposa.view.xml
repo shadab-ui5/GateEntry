@@ -47,7 +47,7 @@
                         </VBox>
                         <VBox width="20%">
                             <Label text="Invoice Number" required="true"/>
-                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%"/>
+                            <Input id="idDocInvNo" value="" change="onChangeDocInvNo" maxLength="16" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="Date"/>
@@ -67,7 +67,7 @@
 
                         <VBox width="20%">
                             <Label text="Vehicle Number" required="true"/>
-                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%"/>
+                            <Input id="idRAPO_VehicalNo" maxLength="10" width="75%" liveChange="convertToCaps"/>
                         </VBox>
                         <VBox width="20%">
                             <Label text="Transporter" required="true"/>
